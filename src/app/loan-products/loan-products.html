@@ -1,0 +1,53 @@
+<main class="products-page">
+  <header class="products-header">
+    <a class="brand-link" routerLink="/">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Shivam Loans</span>
+    </a>
+    <nav aria-label="Application navigation">
+      <a routerLink="/">Dashboard</a>
+      <a routerLink="/loans">Loans</a>
+    </nav>
+  </header>
+
+  <section class="products-hero">
+    <p class="section-kicker">Formal applications</p>
+    <h1>Select the loan type</h1>
+    <p>
+      Choose a loan product and continue to a formal application form with the
+      right fields, documents, and eligibility details for that product.
+    </p>
+  </section>
+
+  <section class="products-grid" aria-label="Loan application types">
+    @for (product of loanProducts(); track product.slug) {
+      <article class="product-card">
+        <div class="product-topline">
+          <span>{{ product.shortName }}</span>
+          <small>{{ product.badge }}</small>
+        </div>
+        <h2>{{ product.title }}</h2>
+        <p>{{ product.description }}</p>
+
+        <div class="product-stats">
+          <div>
+            <strong>{{ product.maxAmount }}</strong>
+            <span>Max amount</span>
+          </div>
+          <div>
+            <strong>{{ product.tenure }}</strong>
+            <span>Tenure</span>
+          </div>
+          <div>
+            <strong>{{ product.rate }}</strong>
+            <span>Rate</span>
+          </div>
+        </div>
+
+        <a class="apply-link" [routerLink]="['/apply', product.slug]">
+          Fill Application
+        </a>
+      </article>
+    }
+  </section>
+</main>

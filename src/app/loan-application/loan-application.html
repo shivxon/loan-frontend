@@ -1,0 +1,186 @@
+<main class="application-page">
+  <header class="application-header">
+    <a class="brand-link" routerLink="/">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Shivam Loans</span>
+    </a>
+    <nav aria-label="Application navigation">
+      <a routerLink="/">Dashboard</a>
+      <a routerLink="/loans">All Loans</a>
+    </nav>
+  </header>
+
+  <section class="application-hero">
+    <div>
+      <p class="section-kicker">Formal application</p>
+      <h1>{{ loanProduct().title }} Application</h1>
+      <p>{{ loanProduct().description }}</p>
+    </div>
+
+    <aside class="loan-summary" aria-label="Selected loan summary">
+      <span>{{ loanProduct().badge }}</span>
+      <div>
+        <strong>{{ loanProduct().maxAmount }}</strong>
+        <small>Maximum amount</small>
+      </div>
+      <div>
+        <strong>{{ loanProduct().tenure }}</strong>
+        <small>Tenure</small>
+      </div>
+      <div>
+        <strong>{{ loanProduct().rate }}</strong>
+        <small>Indicative rate</small>
+      </div>
+    </aside>
+  </section>
+
+  @if (applicationSaved()) {
+    <section class="success-panel" aria-live="polite">
+      <span>Application received</span>
+      <h2>Reference {{ referenceNumber() }}</h2>
+      <p>
+        Your {{ loanProduct().title.toLowerCase() }} application has been saved.
+        Our loan specialist can continue verification from this formal form.
+      </p>
+      <a routerLink="/loans">Fill another application</a>
+    </section>
+  }
+
+  <section class="application-layout">
+    <form class="application-form" (ngSubmit)="saveApplication()" novalidate>
+      <section class="form-section">
+        <div class="section-heading">
+          <span>01</span>
+          <h2>Applicant Details</h2>
+        </div>
+        <div class="field-grid">
+          @for (field of applicantFields; track field.name) {
+            <ng-container
+              [ngTemplateOutlet]="fieldTemplate"
+              [ngTemplateOutletContext]="{ field: field }"
+            />
+          }
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-heading">
+          <span>02</span>
+          <h2>Loan & Income Details</h2>
+        </div>
+        <div class="field-grid">
+          @for (field of financialFields; track field.name) {
+            <ng-container
+              [ngTemplateOutlet]="fieldTemplate"
+              [ngTemplateOutletContext]="{ field: field }"
+            />
+          }
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-heading">
+          <span>03</span>
+          <h2>{{ loanProduct().shortName }} Loan Details</h2>
+        </div>
+        <div class="field-grid">
+          @for (field of loanProduct().applicationFields; track field.name) {
+            <ng-container
+              [ngTemplateOutlet]="fieldTemplate"
+              [ngTemplateOutletContext]="{ field: field }"
+            />
+          }
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-heading">
+          <span>04</span>
+          <h2>Address Details</h2>
+        </div>
+        <div class="field-grid">
+          @for (field of addressFields; track field.name) {
+            <ng-container
+              [ngTemplateOutlet]="fieldTemplate"
+              [ngTemplateOutletContext]="{ field: field }"
+            />
+          }
+        </div>
+      </section>
+
+      <label class="consent">
+        <input type="checkbox" name="termsAccepted" [(ngModel)]="termsAccepted" />
+        <span>
+          I confirm that the information provided is accurate and I authorize Shivam
+          Loans to contact me for eligibility verification.
+        </span>
+      </label>
+      @if (submitted() && !termsAccepted) {
+        <p class="field-error">Authorization is required to submit the application.</p>
+      }
+
+      @if (saveError()) {
+        <p class="field-error">{{ saveError() }}</p>
+      }
+
+      <div class="form-actions">
+        <a routerLink="/loans">Change Loan Type</a>
+        <button type="submit" [disabled]="isSaving()">
+          {{ isSaving() ? 'Submitting...' : 'Submit Formal Application' }}
+        </button>
+      </div>
+    </form>
+
+    <aside class="documents-panel">
+      <h2>Document Checklist</h2>
+      <p>Keep these ready for faster verification.</p>
+      <ul>
+        @for (document of loanProduct().documents; track document) {
+          <li>{{ document }}</li>
+        }
+      </ul>
+    </aside>
+  </section>
+</main>
+
+<ng-template #fieldTemplate let-field="field">
+  <label class="field" [class.full-width]="field.type === 'textarea'">
+    <span>{{ field.label }}</span>
+
+    @if (field.type === 'select') {
+      <select
+        [name]="field.name"
+        [ngModel]="formData[field.name]"
+        (ngModelChange)="updateField(field, $event)"
+        [class.invalid]="isFieldInvalid(field)"
+      >
+        <option value="">{{ field.placeholder }}</option>
+        @for (option of field.options; track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+    } @else if (field.type === 'textarea') {
+      <textarea
+        rows="4"
+        [name]="field.name"
+        [placeholder]="field.placeholder"
+        [ngModel]="formData[field.name]"
+        (ngModelChange)="updateField(field, $event)"
+        [class.invalid]="isFieldInvalid(field)"
+      ></textarea>
+    } @else {
+      <input
+        [type]="field.type"
+        [name]="field.name"
+        [placeholder]="field.placeholder"
+        [ngModel]="formData[field.name]"
+        (ngModelChange)="updateField(field, $event)"
+        [class.invalid]="isFieldInvalid(field)"
+      />
+    }
+
+    @if (isFieldInvalid(field)) {
+      <small class="field-error">{{ fieldError(field) }}</small>
+    }
+  </label>
+</ng-template>

@@ -4,7 +4,7 @@ export interface LoanApplicationField {
   name: string;
   label: string;
   type: LoanFieldType;
-  placeholder: string;
+  placeholder?: string;
   required?: boolean;
   options?: string[];
 }
@@ -17,9 +17,10 @@ export interface LoanProduct {
   maxAmount: string;
   tenure: string;
   rate: string;
-  badge: string;
+  badge?: string;
   documents: string[];
   applicationFields: LoanApplicationField[];
+
 }
 
 export const LOAN_PRODUCTS: LoanProduct[] = [
@@ -258,6 +259,217 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
       },
     ],
   },
+  {
+    slug: 'working-capital-finance',
+    title: 'Working Capital Finance',
+    shortName: 'Working Capital',
+    description: 'Keep your business operations running smoothly with flexible funding options like CC, OD, and invoice financing.',
+    maxAmount: '₹5Cr', // more realistic for most SMEs
+    tenure: '12 months (renewable)',
+    rate: '10% onwards',
+    badge: 'Business funding',
+
+    documents: [
+      'PAN card (business/owner)',
+      'Aadhaar card',
+      'GST certificate',
+      'Business registration proof',
+      'Bank statements (last 6–12 months)',
+      'ITR (last 2–3 years)',
+      'Balance sheet & P&L',
+      'GST returns',
+    ],
+
+    applicationFields: [
+      {
+        name: 'businessType',
+        label: 'Business type',
+        type: 'select',
+        placeholder: 'Select business type',
+        required: true,
+        options: ['Proprietorship', 'Partnership', 'Private Limited', 'LLP'],
+      },
+      {
+        name: 'annualTurnover',
+        label: 'Annual turnover',
+        type: 'number',
+        placeholder: 'Enter yearly turnover',
+        required: true,
+      },
+      {
+        name: 'loanType',
+        label: 'Type of working capital',
+        type: 'select',
+        placeholder: 'Select facility',
+        required: true,
+        options: ['Cash Credit', 'Overdraft', 'Invoice Funding', 'Short-term Loan'],
+      },
+      {
+        name: 'requiredAmount',
+        label: 'Required loan amount',
+        type: 'number',
+        placeholder: 'Enter required amount',
+        required: true,
+      },
+      {
+        name: 'businessVintage',
+        label: 'Business vintage (years)',
+        type: 'number',
+        placeholder: 'How many years in business?',
+        required: true,
+      },
+      {
+        name: 'existingLoans',
+        label: 'Existing loans (if any)',
+        type: 'textarea',
+        placeholder: 'Mention existing loans or liabilities',
+        required: false,
+      },
+    ],
+  },
+  {
+    "slug": "cash-credit",
+    "title": "Cash Credit",
+    "shortName": "CC",
+    "description": "Flexible working capital limit against stock and receivables.",
+    "maxAmount": "₹5Cr",
+    "tenure": "12 months (renewable)",
+    "rate": "10% onwards",
+    "badge": "Popular",
+    "documents": [
+      "PAN card",
+      "Aadhaar card",
+      "GST certificate",
+      "Bank statements",
+      "ITR (2–3 years)",
+      "Stock statements",
+      "Debtors list"
+    ],
+    "applicationFields": [
+      {
+        "name": "annualTurnover",
+        "label": "Annual turnover",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "stockValue",
+        "label": "Current stock value",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "debtorValue",
+        "label": "Receivables value",
+        "type": "number",
+        "required": true
+      }
+    ],
+  },
+  {
+    "slug": "overdraft",
+    "title": "Overdraft",
+    "shortName": "OD",
+    "description": "Withdraw funds as needed with interest charged only on usage.",
+    "maxAmount": "₹3Cr",
+    "tenure": "12 months (renewable)",
+    "rate": "10.5% onwards",
+    "badge": "Flexible",
+    "documents": [
+      "PAN card",
+      "Aadhaar card",
+      "Bank statements",
+      "ITR",
+      "Financial statements"
+    ],
+    "applicationFields": [
+      {
+        "name": "bankingTurnover",
+        "label": "Monthly banking turnover",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "existingLimit",
+        "label": "Existing OD/CC limit",
+        "type": "number",
+        "required": false
+      }
+    ],
+  },
+  {
+    "slug": "term-loan",
+    "title": "Term Loan",
+    "shortName": "Term Loan",
+    "description": "Fixed tenure loan for business expansion and capital expenditure.",
+    "maxAmount": "₹10Cr",
+    "tenure": "1–10 years",
+    "rate": "9.5% onwards",
+    "badge": "Growth funding",
+    "documents": [
+      "PAN card",
+      "Aadhaar card",
+      "ITR",
+      "Balance sheet",
+      "Bank statements",
+      "Project report"
+    ],
+    "applicationFields": [
+      {
+        "name": "loanPurpose",
+        "label": "Purpose of loan",
+        "type": "textarea",
+        "required": true
+      },
+      {
+        "name": "requiredAmount",
+        "label": "Loan amount",
+        "type": "number",
+        "required": true
+      }
+    ],
+
+  },
+  {
+    "slug": "construction-finance",
+    "title": "Construction Finance",
+    "shortName": "Construction",
+    "description": "Funding for real estate and construction projects.",
+    "maxAmount": "₹20Cr",
+    "tenure": "2–5 years",
+    "rate": "11% onwards",
+    "badge": "Project funding",
+    "documents": [
+      "PAN card",
+      "Aadhaar card",
+      "Project plan",
+      "Land ownership documents",
+      "Approvals & licenses",
+      "Cost estimation"
+    ],
+    "applicationFields": [
+      {
+        "name": "projectType",
+        "label": "Project type",
+        "type": "select",
+        "required": true,
+        "options": ["Residential", "Commercial", "Mixed-use"]
+      },
+      {
+        "name": "projectCost",
+        "label": "Total project cost",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "landOwned",
+        "label": "Do you own the land?",
+        "type": "select",
+        "required": true,
+        "options": ["Yes", "No"]
+      }
+    ],
+  }
 ];
 
 export function findLoanProduct(slug: string | null): LoanProduct | undefined {

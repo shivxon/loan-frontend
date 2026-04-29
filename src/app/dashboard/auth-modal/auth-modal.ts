@@ -18,8 +18,21 @@ export interface AuthSuccess {
 })
 export class AuthModalComponent {
   private readonly authService = inject(AuthService);
+  private _isOpen = false;
 
-  @Input() isOpen = false;
+  @Input()
+  set isOpen(value: boolean) {
+    if (value && !this._isOpen) {
+      this.resetForm();
+    }
+
+    this._isOpen = value;
+  }
+
+  get isOpen(): boolean {
+    return this._isOpen;
+  }
+
   @Input() mode: AuthMode = 'login';
 
   @Output() closed = new EventEmitter<void>();
@@ -30,15 +43,27 @@ export class AuthModalComponent {
   protected phoneNumber = '';
   protected consentAccepted = false;
   protected submitted = false;
+  protected otpSubmitted = false;
   protected otpSent = false;
+  protected otpCode = '';
   protected readonly isSubmitting = signal(false);
   protected readonly backendError = signal('');
+  protected readonly otpRequestMessage = signal('');
+  protected readonly devOtp = signal('');
 
   protected get title(): string {
+    if (this.otpSent) {
+      return 'Verify Your Phone Number';
+    }
+
     return this.mode === 'login' ? 'Sign In To Your Account' : 'Create Your Account';
   }
 
   protected get actionLabel(): string {
+    if (this.otpSent) {
+      return 'Verify OTP';
+    }
+
     return this.mode === 'login' ? 'Login with OTP' : 'Sign up with OTP';
   }
 
@@ -48,6 +73,14 @@ export class AuthModalComponent {
 
   protected get phoneIsValid(): boolean {
     return /^[6-9]\d{9}$/.test(this.normalizedPhone);
+  }
+
+  protected get normalizedOtp(): string {
+    return this.otpCode.replace(/\D/g, '');
+  }
+
+  protected get otpIsValid(): boolean {
+    return /^\d{6}$/.test(this.normalizedOtp);
   }
 
   protected get nameIsValid(): boolean {
@@ -61,7 +94,7 @@ export class AuthModalComponent {
   protected switchMode(mode: AuthMode): void {
     this.mode = mode;
     this.submitted = false;
-    this.otpSent = false;
+    this.resetOtpStep();
     this.modeChange.emit(mode);
   }
 
@@ -69,7 +102,28 @@ export class AuthModalComponent {
     this.phoneNumber = value.replace(/\D/g, '').slice(0, 10);
   }
 
+  protected normalizeOtp(value: string): void {
+    this.otpCode = value.replace(/\D/g, '').slice(0, 6);
+  }
+
   protected submit(): void {
+    if (this.otpSent) {
+      this.verifyOtp();
+      return;
+    }
+
+    this.requestOtp();
+  }
+
+  protected resendOtp(): void {
+    this.requestOtp();
+  }
+
+  protected editPhoneNumber(): void {
+    this.resetOtpStep();
+  }
+
+  private requestOtp(): void {
     this.submitted = true;
     this.backendError.set('');
 
@@ -79,15 +133,50 @@ export class AuthModalComponent {
 
     this.isSubmitting.set(true);
     this.authService
-      .authenticatePhone({
+      .requestPhoneOtp({
         phoneNumber: this.normalizedPhone,
         fullName: this.fullName.trim() || undefined,
         mode: this.mode,
       })
       .subscribe({
-        next: () => {
+        next: (response) => {
           this.isSubmitting.set(false);
           this.otpSent = true;
+          this.otpSubmitted = false;
+          this.otpCode = '';
+          this.otpRequestMessage.set(
+            response.message || `OTP sent to +91 ${this.normalizedPhone}.`,
+          );
+          this.devOtp.set(response.devOtp ?? '');
+        },
+        error: (error: { error?: { message?: string } }) => {
+          this.isSubmitting.set(false);
+          this.backendError.set(
+            error.error?.message ?? 'Unable to send OTP right now.',
+          );
+        },
+      });
+  }
+
+  private verifyOtp(): void {
+    this.otpSubmitted = true;
+    this.backendError.set('');
+
+    if (!this.otpIsValid) {
+      return;
+    }
+
+    this.isSubmitting.set(true);
+    this.authService
+      .verifyPhoneOtp({
+        phoneNumber: this.normalizedPhone,
+        fullName: this.fullName.trim() || undefined,
+        mode: this.mode,
+        otp: this.normalizedOtp,
+      })
+      .subscribe({
+        next: () => {
+          this.isSubmitting.set(false);
           this.authenticated.emit({
             phoneNumber: this.normalizedPhone,
             fullName: this.fullName.trim() || undefined,
@@ -97,7 +186,7 @@ export class AuthModalComponent {
         error: (error: { error?: { message?: string } }) => {
           this.isSubmitting.set(false);
           this.backendError.set(
-            error.error?.message ?? 'Unable to verify phone right now.',
+            error.error?.message ?? 'Unable to verify OTP right now.',
           );
         },
       });
@@ -118,5 +207,23 @@ export class AuthModalComponent {
     if (this.isOpen) {
       this.close();
     }
+  }
+
+  private resetOtpStep(): void {
+    this.otpSent = false;
+    this.otpSubmitted = false;
+    this.otpCode = '';
+    this.otpRequestMessage.set('');
+    this.devOtp.set('');
+    this.backendError.set('');
+  }
+
+  private resetForm(): void {
+    this.fullName = '';
+    this.phoneNumber = '';
+    this.consentAccepted = false;
+    this.submitted = false;
+    this.isSubmitting.set(false);
+    this.resetOtpStep();
   }
 }

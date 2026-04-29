@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../api/api.config';
-import { AuthService } from '../auth/auth.service';
 
 export interface CreateLoanApplicationRequest {
   loanType: string;
@@ -26,7 +25,6 @@ export interface CreateLoanApplicationResponse {
 export class LoanApplicationsService {
   private readonly http = inject(HttpClient);
   private readonly apiBaseUrl = inject(API_BASE_URL);
-  private readonly authService = inject(AuthService);
 
   createApplication(
     request: CreateLoanApplicationRequest,
@@ -34,7 +32,6 @@ export class LoanApplicationsService {
     return this.http.post<CreateLoanApplicationResponse>(
       `${this.apiBaseUrl}/applications`,
       request,
-      { headers: this.authService.authHeaders() },
     );
   }
 }

@@ -64,8 +64,8 @@ export class DashboardComponent {
   );
 
   protected readonly quickStats = [
-    { value: '24h', label: 'Fast approval' },
-    { value: '25L', label: 'Max amount' },
+    { value: '36h', label: 'Fast approval' },
+    { value: '10Cr', label: 'Max amount' },
     { value: '100%', label: 'Digital process' },
   ];
 
@@ -103,7 +103,7 @@ export class DashboardComponent {
         'Start with phone OTP and continue the application whenever you return.',
       ],
       metrics: [
-        { value: '7.5L', label: 'Popular loan size' },
+        { value: '10Cr', label: 'Popular loan size' },
         { value: '11.5%', label: 'Sample rate' },
         { value: '36 mo', label: 'Preferred tenure' },
       ],

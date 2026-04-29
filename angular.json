@@ -78,6 +78,11 @@
               "buildTarget": "shivam-loans:build:development"
             }
           },
+          "options": {
+            "allowedHosts": [
+              "5f5c-103-68-31-110.ngrok-free.app"
+            ]
+          },
           "defaultConfiguration": "development"
         },
         "test": {

@@ -18,7 +18,7 @@ export const routes: Routes = [
   {
     path: 'apply/:loanType',
     component: LoanApplicationComponent,
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     title: 'Loan Application',
   },
   {

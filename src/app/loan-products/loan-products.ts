@@ -23,6 +23,7 @@ export class LoanProductsComponent {
 
     this.loanProductsService.findAll().subscribe({
       next: (products) => {
+        console.log('products========>',products)
         if (products.length > 0) {
           this.loanProducts.set(products);
         }

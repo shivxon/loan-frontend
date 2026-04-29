@@ -20,7 +20,7 @@
 
     <div class="topbar-actions">
       @if (currentUser(); as user) {
-        <span class="user-chip">+91 {{ user.phoneNumber }}</span>
+        <span class="user-chip">{{ user.fullName }}</span>
         <button class="ghost-button" type="button" (click)="logout()">Logout</button>
       } @else {
         <button class="ghost-button" type="button" (click)="openAuth('signup')">
@@ -37,12 +37,12 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
         <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <a routerLink="/" fragment="top">Home</a>
-          <span aria-hidden="true">/</span>
-          <span>Personal Loan</span>
+          <!-- <a routerLink="/" fragment="top">Home</a> -->
+          <!-- <span aria-hidden="true">/</span>
+          <span>Personal Loan</span> -->
         </nav>
-        <p class="section-kicker">Personal loan dashboard</p>
-        <h1 id="hero-title">Get closer to your goals with an instant personal loan</h1>
+        <!-- <p class="section-kicker">Personal loan dashboard</p> -->
+        <h1 id="hero-title">Find the right loan for your needs — faster and simpler</h1>
         <p class="hero-lede">
           Explore flexible loan options, verify with phone OTP, and manage the full
           application journey from one focused dashboard.
@@ -86,7 +86,7 @@
         </div>
         <div class="floating-note note-one">
           <span aria-hidden="true">₹</span>
-          <strong>7.5L</strong>
+          <strong>10Cr</strong>
           <small>Approved limit</small>
         </div>
         <div class="floating-note note-two">
@@ -181,7 +181,7 @@
                 <input
                   type="range"
                   min="50000"
-                  max="2500000"
+                  max="500000000"
                   step="50000"
                   [value]="loanAmount()"
                   (input)="updateLoanAmount($event)"
@@ -194,7 +194,7 @@
                 <input
                   type="range"
                   min="12"
-                  max="60"
+                  max="120"
                   step="6"
                   [value]="tenureMonths()"
                   (input)="updateTenure($event)"
@@ -207,7 +207,7 @@
                 <input
                   type="range"
                   min="8"
-                  max="24"
+                  max="40"
                   step="0.5"
                   [value]="interestRate()"
                   (input)="updateInterest($event)"

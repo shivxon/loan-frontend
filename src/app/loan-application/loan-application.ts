@@ -65,6 +65,12 @@ export class LoanApplicationComponent {
       required: true,
     },
     {
+      name: 'aadhaarNumber',
+      label: 'Aadhaar number',
+      type: 'text',
+      placeholder: '12 digit Aadhaar number',
+    },
+    {
       name: 'dateOfBirth',
       label: 'Date of birth',
       type: 'date',
@@ -148,6 +154,7 @@ export class LoanApplicationComponent {
     phoneNumber: '',
     email: '',
     panNumber: '',
+    aadhaarNumber: '',
     dateOfBirth: '',
     loanAmount: '',
     preferredTenure: '',
@@ -205,6 +212,10 @@ export class LoanApplicationComponent {
       nextValue = nextValue.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
     }
 
+    if (field.name === 'aadhaarNumber') {
+      nextValue = nextValue.replace(/\D/g, '').slice(0, 12);
+    }
+
     this.formData[field.name] = nextValue;
   }
 
@@ -227,6 +238,10 @@ export class LoanApplicationComponent {
 
     if (field.name === 'panNumber') {
       return 'Enter a valid PAN number.';
+    }
+
+    if (field.name === 'aadhaarNumber') {
+      return 'Enter a valid 12 digit Aadhaar number.';
     }
 
     if (field.name === 'pincode') {
@@ -331,6 +346,10 @@ export class LoanApplicationComponent {
 
     if (field.name === 'panNumber') {
       return /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(value);
+    }
+
+    if (field.name === 'aadhaarNumber') {
+      return /^\d{12}$/.test(value);
     }
 
     if (field.name === 'pincode') {

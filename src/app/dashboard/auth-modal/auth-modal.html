@@ -47,53 +47,91 @@
 
         <h2 id="auth-title">{{ title }}</h2>
 
-        @if (mode === 'signup') {
-          <label class="field">
-            <span>Full Name</span>
-            <input
-              type="text"
-              name="fullName"
-              autocomplete="name"
-              [(ngModel)]="fullName"
-              [class.invalid]="submitted && !nameIsValid"
-            />
-          </label>
-          @if (submitted && !nameIsValid) {
-            <p class="field-error">Enter your full name.</p>
+        @if (!otpSent) {
+          @if (mode === 'signup') {
+            <label class="field">
+              <span>Full Name</span>
+              <input
+                type="text"
+                name="fullName"
+                autocomplete="name"
+                [(ngModel)]="fullName"
+                [class.invalid]="submitted && !nameIsValid"
+              />
+            </label>
+            @if (submitted && !nameIsValid) {
+              <p class="field-error">Enter your full name.</p>
+            }
           }
-        }
 
-        <label class="field">
-          <span>Phone Number</span>
-          <div class="phone-row">
-            <span class="country-code">+91</span>
-            <input
-              type="tel"
-              name="phoneNumber"
-              inputmode="numeric"
-              autocomplete="tel-national"
-              [ngModel]="phoneNumber"
-              (ngModelChange)="normalizePhone($event)"
-              [class.invalid]="submitted && !phoneIsValid"
-              maxlength="10"
-            />
+          <label class="field">
+            <span>Phone Number</span>
+            <div class="phone-row">
+              <span class="country-code">+91</span>
+              <input
+                type="tel"
+                name="phoneNumber"
+                inputmode="numeric"
+                autocomplete="tel-national"
+                [ngModel]="phoneNumber"
+                (ngModelChange)="normalizePhone($event)"
+                [class.invalid]="submitted && !phoneIsValid"
+                maxlength="10"
+              />
+            </div>
+          </label>
+          @if (submitted && !phoneIsValid) {
+            <p class="field-error">Enter a valid 10 digit Indian mobile number.</p>
+          }
+
+          <label class="consent">
+            <input type="checkbox" name="consent" [(ngModel)]="consentAccepted" />
+            <span>
+              I agree to the Shivam Loans
+              <a href="#contact">Privacy Policy</a>
+              and
+              <a href="#contact">Terms and Conditions</a>.
+            </span>
+          </label>
+          @if (submitted && !consentAccepted) {
+            <p class="field-error">Accept the terms to continue.</p>
+          }
+        } @else {
+          <div class="otp-panel">
+            <p class="success-message">
+              {{ otpRequestMessage() || 'OTP sent successfully.' }}
+            </p>
+
+            @if (devOtp()) {
+              <p class="demo-otp">Demo OTP: {{ devOtp() }}</p>
+            }
+
+            <label class="field otp-field">
+              <span>Enter 6 Digit OTP</span>
+              <input
+                type="text"
+                name="otpCode"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                [ngModel]="otpCode"
+                (ngModelChange)="normalizeOtp($event)"
+                [class.invalid]="otpSubmitted && !otpIsValid"
+                maxlength="6"
+              />
+            </label>
+            @if (otpSubmitted && !otpIsValid) {
+              <p class="field-error">Enter the 6 digit OTP.</p>
+            }
+
+            <div class="otp-actions">
+              <button type="button" class="link-button" (click)="resendOtp()" [disabled]="isSubmitting()">
+                Resend OTP
+              </button>
+              <button type="button" class="link-button" (click)="editPhoneNumber()" [disabled]="isSubmitting()">
+                Change Number
+              </button>
+            </div>
           </div>
-        </label>
-        @if (submitted && !phoneIsValid) {
-          <p class="field-error">Enter a valid 10 digit Indian mobile number.</p>
-        }
-
-        <label class="consent">
-          <input type="checkbox" name="consent" [(ngModel)]="consentAccepted" />
-          <span>
-            I agree to the Shivam Loans
-            <a href="#contact">Privacy Policy</a>
-            and
-            <a href="#contact">Terms and Conditions</a>.
-          </span>
-        </label>
-        @if (submitted && !consentAccepted) {
-          <p class="field-error">Accept the terms to continue.</p>
         }
 
         @if (backendError()) {
@@ -101,14 +139,8 @@
         }
 
         <button class="submit-button" type="submit" [disabled]="isSubmitting()">
-          {{ isSubmitting() ? 'Verifying...' : actionLabel }}
+          {{ isSubmitting() ? (otpSent ? 'Verifying...' : 'Sending...') : actionLabel }}
         </button>
-
-        @if (otpSent) {
-          <p class="success-message">
-            Phone verified with +91 {{ normalizedPhone }}. You can continue securely.
-          </p>
-        }
 
         <div class="trust-badge">
           <span aria-hidden="true">✓</span>

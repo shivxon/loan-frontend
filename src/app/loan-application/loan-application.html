@@ -173,6 +173,7 @@
         [type]="field.type"
         [name]="field.name"
         [placeholder]="field.placeholder"
+        [attr.inputmode]="field.name === 'aadhaarNumber' ? 'numeric' : null"
         [ngModel]="formData[field.name]"
         (ngModelChange)="updateField(field, $event)"
         [class.invalid]="isFieldInvalid(field)"

@@ -818,3 +818,144 @@
     font-size: 13px;
   }
 }
+
+/* My Applications Band */
+.my-applications-band {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 28px 0;
+}
+
+.my-apps-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.my-apps-heading h2 {
+  margin: 0;
+  color: #17243a;
+  font-size: 34px;
+}
+
+.my-apps-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.my-apps-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.my-apps-scroll::-webkit-scrollbar-track {
+  background: #edf2f9;
+  border-radius: 99px;
+}
+
+.my-apps-scroll::-webkit-scrollbar-thumb {
+  background: #c9dced;
+  border-radius: 99px;
+}
+
+.my-apps-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a3b8d0;
+}
+
+.app-card {
+  flex: 0 0 320px;
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid #dbe6f3;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 42px rgba(23, 36, 58, 0.08);
+  text-decoration: none;
+  color: #17243a;
+  scroll-snap-align: start;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.app-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 52px rgba(23, 36, 58, 0.13);
+  border-color: #1f6fc2;
+}
+
+.app-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-title {
+  font-size: 18px;
+  color: #17243a;
+  line-height: 1.3;
+}
+
+.app-status {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.app-status[data-status="submitted"] {
+  color: #1f6fc2;
+  background: #e8f2ff;
+}
+
+.app-status[data-status="review"] {
+  color: #b8860b;
+  background: #fff8e6;
+}
+
+.app-status[data-status="approved"] {
+  color: #17664d;
+  background: #e6f9f0;
+}
+
+.app-status[data-status="rejected"] {
+  color: #c72336;
+  background: #ffeaed;
+}
+
+.app-status[data-status="faulted"] {
+  color: #c77b23;
+  background: #fff3e0;
+}
+
+.app-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-ref {
+  color: #1f5fae;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.app-date {
+  color: #7a8798;
+  font-size: 13px;
+  font-weight: 700;
+}

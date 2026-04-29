@@ -15,6 +15,7 @@
       <a routerLink="/loans">Loans</a>
       <a routerLink="/" fragment="dashboard" (click)="selectTab('emi')">EMI</a>
       <a routerLink="/" fragment="dashboard" (click)="selectTab('eligibility')">Eligibility</a>
+      <a routerLink="/about">About Us</a>
       <a routerLink="/" fragment="contact">Contact</a>
     </nav>
 
@@ -126,6 +127,33 @@
         }
       </div>
     </section>
+
+    @if (currentUser() && myApplications().length > 0) {
+      <section class="my-applications-band" aria-labelledby="my-apps-title">
+        <div class="my-apps-heading">
+          <div>
+            <p class="section-kicker">Your applications</p>
+            <h2 id="my-apps-title">My Applications</h2>
+          </div>
+        </div>
+        <div class="my-apps-scroll">
+          @for (app of myApplications(); track app._id) {
+            <a class="app-card" [routerLink]="['/application', app.referenceNumber]">
+              <div class="app-card-top">
+                <strong class="app-title">{{ app.loanTitle }}</strong>
+                <span class="app-status" [attr.data-status]="app.status">
+                  {{ statusLabel(app.status) }}
+                </span>
+              </div>
+              <div class="app-card-bottom">
+                <span class="app-ref">{{ app.referenceNumber }}</span>
+                <span class="app-date">{{ formatDate(app.createdAt) }}</span>
+              </div>
+            </a>
+          }
+        </div>
+      </section>
+    }
 
     <section class="dashboard-panel" id="dashboard" aria-labelledby="dashboard-title">
       <div class="dashboard-heading">
@@ -240,12 +268,17 @@
     </div>
     <nav aria-label="Footer navigation">
       <a routerLink="/" fragment="dashboard">Dashboard</a>
+      <a routerLink="/about">About Us</a>
       <a routerLink="/" fragment="dashboard" (click)="selectTab('fees')">Fees</a>
       <a routerLink="/" fragment="dashboard" (click)="selectTab('faq')">FAQ</a>
     </nav>
-    <button class="secondary-button light" type="button" (click)="openAuth('login')">
-      Login with Phone
-    </button>
+    @if (currentUser()) {
+      <a class="secondary-button light" routerLink="/loans">Apply Now</a>
+    } @else {
+      <button class="secondary-button light" type="button" (click)="openAuth('login')">
+        Login with Phone
+      </button>
+    }
   </footer>
 </div>
 

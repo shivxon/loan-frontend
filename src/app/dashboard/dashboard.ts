@@ -1,9 +1,14 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, PLATFORM_ID, computed, inject, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { AuthModalComponent, AuthMode, AuthSuccess } from './auth-modal/auth-modal';
 import { LOAN_PRODUCTS } from '../loan-products/loan-products.data';
+import {
+  LoanApplicationsService,
+  LoanApplicationSummary,
+} from '../loan-application/loan-applications.service';
 
 type DashboardTabId =
   | 'overview'
@@ -32,15 +37,19 @@ interface DashboardTab {
   styleUrl: './dashboard.scss'
 })
 export class DashboardComponent {
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly loanApplicationsService = inject(LoanApplicationsService);
 
   protected readonly activeTab = signal<DashboardTabId>('overview');
   protected readonly authModalOpen = signal(false);
   protected readonly authMode = signal<AuthMode>('login');
   protected readonly pendingRedirect = signal<string | null>(null);
   protected readonly currentUser = this.authService.currentUser;
+  protected readonly myApplications = signal<LoanApplicationSummary[]>([]);
+  protected readonly loadingApplications = signal(false);
 
   protected readonly loanAmount = signal(750000);
   protected readonly tenureMonths = signal(36);
@@ -247,6 +256,10 @@ export class DashboardComponent {
       this.pendingRedirect.set(params.get('redirect'));
       this.openAuth(modal);
     });
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadMyApplications();
+    }
   }
 
   protected selectTab(tabId: DashboardTabId): void {
@@ -269,6 +282,7 @@ export class DashboardComponent {
 
   protected handleAuthenticated(_authSuccess: AuthSuccess): void {
     this.authModalOpen.set(false);
+    this.loadMyApplications();
 
     const redirectUrl = this.pendingRedirect();
     this.pendingRedirect.set(null);
@@ -303,6 +317,41 @@ export class DashboardComponent {
       currency: 'INR',
       maximumFractionDigits: 0,
     }).format(value);
+  }
+
+  protected formatDate(dateStr: string): string {
+    if (!dateStr) return '—';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  }
+
+  protected statusLabel(status: string): string {
+    const map: Record<string, string> = {
+      submitted: 'Submitted',
+      review: 'Under Review',
+      approved: 'Approved',
+      rejected: 'Rejected',
+      faulted: 'Needs Attention',
+    };
+    return map[status] ?? status;
+  }
+
+  private loadMyApplications(): void {
+    if (!this.authService.isLoggedIn()) return;
+    this.loadingApplications.set(true);
+    this.loanApplicationsService.getMyApplications().subscribe({
+      next: (apps) => {
+        this.myApplications.set(apps);
+        this.loadingApplications.set(false);
+      },
+      error: () => {
+        this.loadingApplications.set(false);
+      },
+    });
   }
 
   private clearAuthQueryParams(): void {

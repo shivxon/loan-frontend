@@ -1,0 +1,115 @@
+<main class="about-page">
+  <header class="about-header">
+    <a class="brand-link" routerLink="/">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Shivam Loans</span>
+    </a>
+    <nav aria-label="About navigation">
+      <a routerLink="/">Dashboard</a>
+      <a routerLink="/loans">Loans</a>
+      <a routerLink="/about" class="active">About Us</a>
+    </nav>
+  </header>
+
+  <section class="about-hero">
+    <div class="hero-content">
+      <p class="section-kicker">About Shivam Loans</p>
+      <h1>Much more than money</h1>
+      <p class="hero-lede">
+        We are a digital lending platform committed to making loan access simple,
+        fast, and transparent for every Indian. From personal loans to business
+        financing, we connect you with the right lender at the right terms.
+      </p>
+      <a class="primary-button" routerLink="/loans">Explore Loan Products</a>
+    </div>
+    <div class="hero-accent" aria-hidden="true">
+      <div class="accent-ring">
+        <div class="inner-ring">
+          <strong>SL</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-band" aria-label="Company statistics">
+    @for (stat of stats; track stat.label) {
+      <div class="stat-card">
+        <strong>{{ stat.value }}</strong>
+        <span>{{ stat.label }}</span>
+      </div>
+    }
+  </section>
+
+  <section class="mission-section" aria-labelledby="mission-title">
+    <div class="mission-card">
+      <span class="card-icon" aria-hidden="true">🎯</span>
+      <h2 id="mission-title">Our Mission</h2>
+      <p>
+        To democratize access to credit by building a technology-driven platform
+        that simplifies the loan journey for customers while maintaining the
+        highest standards of data security and transparency.
+      </p>
+    </div>
+    <div class="mission-card">
+      <span class="card-icon" aria-hidden="true">🔭</span>
+      <h2>Our Vision</h2>
+      <p>
+        To become India's most trusted digital lending marketplace — where every
+        eligible borrower can find the right loan product within minutes, not days.
+      </p>
+    </div>
+  </section>
+
+  <section class="values-section" aria-labelledby="values-title">
+    <div class="values-heading">
+      <p class="section-kicker">What drives us</p>
+      <h2 id="values-title">Our Core Values</h2>
+    </div>
+    <div class="values-grid">
+      @for (value of values; track value.title) {
+        <div class="value-card">
+          <span class="value-icon" aria-hidden="true">{{ value.icon }}</span>
+          <h3>{{ value.title }}</h3>
+          <p>{{ value.description }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="team-section" aria-labelledby="team-title">
+    <div class="team-heading">
+      <p class="section-kicker">Our leadership</p>
+      <h2 id="team-title">Meet the Team</h2>
+    </div>
+    <div class="team-grid">
+      @for (member of team; track member.name) {
+        <div class="team-card">
+          <div class="avatar">{{ member.initials }}</div>
+          <strong>{{ member.name }}</strong>
+          <span>{{ member.role }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to get started?</h2>
+    <p>Apply for a loan today and experience the Shivam Loans difference.</p>
+    <div class="cta-actions">
+      <a class="primary-button" routerLink="/loans">Apply Now</a>
+      <a class="secondary-button" routerLink="/" fragment="contact">Contact Us</a>
+    </div>
+  </section>
+
+  <footer class="about-footer">
+    <div>
+      <strong>Shivam Loans</strong>
+      <p>Digital loan assistance for personal loan customers.</p>
+    </div>
+    <nav aria-label="Footer navigation">
+      <a routerLink="/">Dashboard</a>
+      <a routerLink="/loans">Loans</a>
+      <a routerLink="/about">About Us</a>
+    </nav>
+  </footer>
+</main>

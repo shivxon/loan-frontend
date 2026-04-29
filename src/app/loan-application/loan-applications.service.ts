@@ -19,6 +19,28 @@ export interface CreateLoanApplicationResponse {
   submittedAt: string;
 }
 
+export interface LoanApplicationSummary {
+  _id: string;
+  referenceNumber: string;
+  loanType: string;
+  loanTitle: string;
+  status: 'submitted' | 'review' | 'approved' | 'rejected' | 'faulted';
+  faults: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TrackingResponse {
+  referenceNumber: string;
+  status: string;
+  faults: string[];
+  loanType: string;
+  loanTitle: string;
+  userPhone: string;
+  submittedAt: string;
+  updatedAt: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -32,6 +54,18 @@ export class LoanApplicationsService {
     return this.http.post<CreateLoanApplicationResponse>(
       `${this.apiBaseUrl}/applications`,
       request,
+    );
+  }
+
+  getMyApplications(): Observable<LoanApplicationSummary[]> {
+    return this.http.get<LoanApplicationSummary[]>(
+      `${this.apiBaseUrl}/applications/mine`,
+    );
+  }
+
+  trackApplication(referenceNumber: string): Observable<TrackingResponse> {
+    return this.http.get<TrackingResponse>(
+      `${this.apiBaseUrl}/tracking/${referenceNumber}`,
     );
   }
 }

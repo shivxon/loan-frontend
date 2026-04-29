@@ -1,0 +1,117 @@
+<main class="detail-page">
+  <header class="detail-header">
+    <a class="brand-link" routerLink="/">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Shivam Loans</span>
+    </a>
+    <nav aria-label="Detail navigation">
+      <a routerLink="/">Dashboard</a>
+      <a routerLink="/loans">All Loans</a>
+      <a routerLink="/about">About Us</a>
+    </nav>
+  </header>
+
+  <section class="detail-hero">
+    <p class="section-kicker">Application tracking</p>
+    <h1>Application Details</h1>
+    <p>Track the status of your submitted loan application.</p>
+  </section>
+
+  @if (loading()) {
+    <section class="detail-content">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading application details…</p>
+      </div>
+    </section>
+  } @else if (error()) {
+    <section class="detail-content">
+      <div class="error-state">
+        <span class="error-icon">!</span>
+        <h2>Something went wrong</h2>
+        <p>{{ error() }}</p>
+        <a class="back-link" routerLink="/">Back to Dashboard</a>
+      </div>
+    </section>
+  } @else if (application(); as app) {
+    <section class="detail-content">
+      <div class="detail-main">
+        <div class="status-progress">
+          <h2>Application Progress</h2>
+          @if (app.status === 'rejected' || app.status === 'faulted') {
+            <div class="progress-alert" [class]="statusClass(app.status)">
+              <strong>{{ statusLabel(app.status) }}</strong>
+              <p>Your application requires attention. Review the issues below.</p>
+            </div>
+          } @else {
+            <div class="progress-track">
+              @for (step of statusSteps; track step.key) {
+                <div class="progress-step" [class.reached]="stepReached(step.key)" [class.current]="app.status === step.key">
+                  <span class="step-dot"></span>
+                  <span class="step-label">{{ step.label }}</span>
+                </div>
+              }
+              <div class="progress-line">
+                <div class="progress-fill" [style.width]="app.status === 'submitted' ? '0%' : app.status === 'review' ? '50%' : '100%'"></div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <span class="info-label">Reference Number</span>
+            <strong class="info-value highlight">{{ app.referenceNumber }}</strong>
+          </div>
+          <div class="info-card">
+            <span class="info-label">Status</span>
+            <span class="status-badge" [class]="statusClass(app.status)">{{ statusLabel(app.status) }}</span>
+          </div>
+          <div class="info-card">
+            <span class="info-label">Loan Type</span>
+            <strong class="info-value">{{ app.loanTitle }}</strong>
+          </div>
+          <div class="info-card">
+            <span class="info-label">Phone Number</span>
+            <strong class="info-value">{{ app.userPhone }}</strong>
+          </div>
+          <div class="info-card">
+            <span class="info-label">Submitted On</span>
+            <strong class="info-value">{{ formatDate(app.submittedAt) }}</strong>
+          </div>
+          <div class="info-card">
+            <span class="info-label">Last Updated</span>
+            <strong class="info-value">{{ formatDate(app.updatedAt) }}</strong>
+          </div>
+        </div>
+
+        @if (app.faults.length > 0) {
+          <div class="faults-section">
+            <h2>Issues Requiring Attention</h2>
+            <ul>
+              @for (fault of app.faults; track fault) {
+                <li>{{ fault }}</li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+
+      <aside class="detail-sidebar">
+        <div class="sidebar-card">
+          <h3>Need Help?</h3>
+          <p>Our loan specialists are available to assist you.</p>
+          <div class="contact-item">
+            <strong>Phone Support</strong>
+            <small>+91 87555 40601</small>
+          </div>
+          <div class="contact-item">
+            <strong>Email Support</strong>
+            <small>support&#64;shivamloans.com</small>
+          </div>
+        </div>
+        <a class="back-button" routerLink="/">← Back to Dashboard</a>
+      </aside>
+    </section>
+  }
+</main>

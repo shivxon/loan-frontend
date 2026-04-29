@@ -11,27 +11,43 @@ import { AuthService } from './auth.service';
 export const authInterceptor: HttpInterceptorFn = (request, next) => {
   const apiBaseUrl = inject(API_BASE_URL);
   const authService = inject(AuthService);
+
   const isApiRequest = request.url.startsWith(apiBaseUrl);
   const isAuthRequest = request.url.includes('/auth/');
   const accessToken = authService.accessToken();
-  const authorizedRequest =
-    isApiRequest && !isAuthRequest && accessToken && !request.headers.has('Authorization')
-      ? addAuthHeader(request, accessToken)
-      : request;
+  const alreadyRetried = request.headers.has('x-retry');
 
-  return next(authorizedRequest).pipe(
+  // ✅ Attach token if needed
+  let modifiedRequest = request;
+
+  if (
+    isApiRequest &&
+    !isAuthRequest &&
+    accessToken &&
+    !request.headers.has('Authorization')
+  ) {
+    modifiedRequest = addAuthHeader(request, accessToken);
+  }
+
+  return next(modifiedRequest).pipe(
     catchError((error: unknown) => {
       if (
         !(error instanceof HttpErrorResponse) ||
         error.status !== 401 ||
         !isApiRequest ||
-        isAuthRequest
+        isAuthRequest ||
+        alreadyRetried
       ) {
         return throwError(() => error);
       }
-
       return authService.refreshSession().pipe(
-        switchMap((user) => next(addAuthHeader(request, user.accessToken))),
+        switchMap((user) => {
+          const retryRequest = request.clone({
+            setHeaders: { 'x-retry': 'true' },
+          });
+
+          return next(addAuthHeader(retryRequest, user.accessToken));
+        }),
         catchError((refreshError: unknown) => {
           authService.clearLocalSession();
           return throwError(() => refreshError);
@@ -41,7 +57,10 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
   );
 };
 
-function addAuthHeader(request: HttpRequest<unknown>, accessToken: string) {
+function addAuthHeader(
+  request: HttpRequest<unknown>,
+  accessToken: string,
+) {
   return request.clone({
     setHeaders: {
       Authorization: `Bearer ${accessToken}`,

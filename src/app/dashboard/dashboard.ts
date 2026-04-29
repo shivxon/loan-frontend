@@ -120,27 +120,18 @@ export class DashboardComponent {
         void this.router.navigate([], {
           queryParams: {
             modal: 'login',
-            redirect: draft ? `/apply/${draft.loanType}` : this.router.url
+            redirect: draft ? `/apply/${draft.loanType}` : '/loans'
           },
           queryParamsHandling: 'merge'
         });
         return;
       }
 
-      // 1. Prioritize half-filled (draft) applications from NgRx Store
-      if (draft) {
+      // 1. Resume draft if it exists in the NgRx store
+      if (draft && draft.loanType) {
         void this.router.navigate(['/apply', draft.loanType]);
-        return;
-      }
-
-      // 2. Otherwise, check for submitted applications needing attention
-      const apps = this.myApplications();
-      const resumeApp = apps.find(app => app.status === 'faulted') ||
-                        apps.find(app => app.status === 'review' || app.status === 'submitted');
-
-      if (resumeApp) {
-        void this.router.navigate(['/application', resumeApp.referenceNumber]);
       } else {
+        // 2. Fallback to All Loans page as requested
         void this.router.navigate(['/loans']);
       }
     });

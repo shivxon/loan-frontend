@@ -27,3 +27,64 @@ button {
 a {
   color: inherit;
 }
+
+/* 🔹 GLOBAL BUTTONS */
+.primary-button,
+.secondary-button,
+.ghost-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0 22px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.primary-button {
+  color: #ffffff;
+  background: #ef3c50;
+  box-shadow: 0 14px 28px rgba(239, 60, 80, 0.23);
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.ghost-button:hover {
+  transform: translateY(-1px);
+}
+
+.primary-button.compact,
+.secondary-button.light {
+  min-height: 42px;
+  padding: 0 18px;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  color: #1f5fae;
+  background: #ffffff;
+  border-color: #c9dced;
+}
+
+.ghost-button {
+  color: #ef3c50;
+  background: #fff1f3;
+}
+
+/* 🔹 UTILITIES */
+.section-kicker {
+  margin: 0 0 12px;
+  color: #1f6fc2;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

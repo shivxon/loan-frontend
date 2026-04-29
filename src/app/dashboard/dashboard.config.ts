@@ -1,6 +1,6 @@
-import { DashboardTab } from './dashboard.types';
+import { InfoTab } from '../shared/info-tabs/info-tabs.types';
 
-export const DASHBOARD_TABS: DashboardTab[] = [
+export const DASHBOARD_TABS: InfoTab[] = [
     {
         id: 'overview',
         label: 'Overview',
@@ -130,11 +130,32 @@ export const DASHBOARD_TABS: DashboardTab[] = [
         title: 'Answer the questions that slow users down',
         description:
             'A practical FAQ tab can reduce support calls while keeping the user inside the loan journey.',
-        points: [
-            'Applying does not guarantee approval from a lender.',
-            'Final rate depends on income, bureau score, and lender policy.',
-            'OTP login keeps the application connected to the customer mobile number.',
+        // points: [
+        //     'Applying does not guarantee approval from a lender.',
+        //     'Final rate depends on income, bureau score, and lender policy.',
+        //     'OTP login keeps the application connected to the customer mobile number.',
+        // ],
+
+        faqs: [
+            {
+                question: 'Does applying for a loan guarantee approval?',
+                answer: 'No, loan approval depends on your income, credit profile, and lender policy.',
+                open: true
+            },
+            {
+                question: 'What is minimum salary for personal loan?',
+                answer: 'Most lenders require ₹15,000–₹25,000 monthly income.'
+            },
+            {
+                question: 'How quickly can I get a loan approved?',
+                answer: 'Loan approval typically takes 24–48 hours.'
+            },
+            {
+                question: 'How is loan eligibility calculated?',
+                answer: 'It depends on your income, existing EMIs, and employment stability.'
+            }
         ],
+
         metrics: [
             { value: 'OTP', label: 'Login method' },
             { value: '24x7', label: 'Dashboard access' },

@@ -1,0 +1,151 @@
+<div class="info-tabs-container">
+  <div class="tabs" role="tablist" aria-label="Information sections">
+    @for (tab of tabs; track tab.id) {
+    <button type="button" role="tab" [class.active]="activeTab() === tab.id"
+      [attr.aria-selected]="activeTab() === tab.id" [attr.aria-controls]="'panel-' + tab.id" [id]="'tab-' + tab.id"
+      (click)="selectTab(tab.id)">
+      {{ tab.label }}
+    </button>
+    }
+  </div>
+
+  @if (activeTabContent(); as content) {
+  <article class="tab-content" role="tabpanel" [id]="'panel-' + content.id"
+    [attr.aria-labelledby]="'tab-' + content.id">
+
+    <div class="tab-copy">
+      @if (content.eyebrow) {
+        <p class="section-kicker">{{ content.eyebrow }}</p>
+      }
+      @if (content.title) {
+        <h3>{{ content.title }}</h3>
+      }
+      @if (content.description) {
+        <p>{{ content.description }}</p>
+      }
+
+      @if (content.id === 'emi') {
+        <div class="emi-formula">
+          <h4>How is EMI Calculated?</h4>
+          <p>Equated Monthly Installment (EMI) is calculated using the following Compound Interest formula:</p>
+          <div class="formula-display">
+            EMI = [P * r * (1 + r)^n] / [(1 + r)^n - 1]
+          </div>
+          <div class="formula-where">
+            <p><strong>Where:</strong></p>
+            <ul>
+              <li><strong>P</strong> = Loan principal amount</li>
+              <li><strong>r</strong> = Monthly interest rate (Annual rate / 12 / 100)</li>
+              <li><strong>n</strong> = Loan tenure in months</li>
+            </ul>
+          </div>
+        </div>
+      }
+
+      <!-- FAQ SECTION -->
+      @if (content.id === 'faq' || content.faqs?.length) {
+        <section class="faq">
+          <div class="faq-container">
+            @for (faq of content.faqs; track faq.question) {
+            <div class="faq-card" [class.open]="faq.open">
+              <div class="faq-question" (click)="faq.open = !faq.open">
+                <span>{{ faq.question }}</span>
+                <div class="faq-icon">
+                  {{ faq.open ? '−' : '+' }}
+                </div>
+              </div>
+              @if (faq.open) {
+              <div class="faq-answer">
+                {{ faq.answer }}
+              </div>
+              }
+            </div>
+            }
+          </div>
+        </section>
+      } @else if (content.points?.length) {
+        <!-- NORMAL CONTENT -->
+        <ul>
+          @for (point of content.points; track point) {
+          <li>{{ point }}</li>
+          }
+        </ul>
+      }
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <aside class="tab-aside" aria-label="Selected tab details">
+      @if (content.id === 'emi') {
+        <!-- EMI CALCULATOR -->
+        <div class="emi-widget">
+          <label>
+            <span>Loan amount</span>
+            <strong>{{ formatCurrency(loanAmount()) }}</strong>
+            <input type="range" min="50000" max="50000000" step="50000" [value]="loanAmount()"
+              (input)="updateLoanAmount($event)" />
+          </label>
+          <label>
+            <span>Tenure</span>
+            <strong>{{ tenureMonths() }} months</strong>
+            <input type="range" min="12" max="120" step="6" [value]="tenureMonths()" (input)="updateTenure($event)" />
+          </label>
+          <label>
+            <span>Interest rate</span>
+            <strong>{{ interestRate() }}%</strong>
+            <input type="range" min="8" max="40" step="0.5" [value]="interestRate()"
+              (input)="updateInterest($event)" />
+          </label>
+          <div class="emi-result">
+            <div class="emi-main">
+              <span>Monthly EMI</span>
+              <strong>{{ formatCurrency(monthlyEmi()) }}</strong>
+            </div>
+          </div>
+
+          <div class="emi-visuals">
+            <div class="chart-box">
+              <div class="pie-chart" [style.background]="'conic-gradient(#1f5fae ' + (100 - interestPercentage()) + '%, #d8ebff 0)'">
+                <div class="pie-inner"></div>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <span class="dot principal"></span>
+                  <small>Principal Amount</small>
+                </div>
+                <div class="legend-item">
+                  <span class="dot interest"></span>
+                  <small>Interest Amount</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="emi-breakdown">
+              <div class="breakdown-row">
+                <span>Principal</span>
+                <strong>{{ formatCurrency(loanAmount()) }}</strong>
+              </div>
+              <div class="breakdown-row">
+                <span>Interest</span>
+                <strong>{{ formatCurrency(totalInterest()) }}</strong>
+              </div>
+              <div class="breakdown-row total">
+                <span>Total</span>
+                <strong>{{ formatCurrency(totalPayable()) }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      } @else if (content.metrics?.length) {
+        <!-- METRICS -->
+        @for (metric of content.metrics; track metric.label) {
+        <div class="metric-card">
+          <strong>{{ metric.value }}</strong>
+          <span>{{ metric.label }}</span>
+        </div>
+        }
+      }
+    </aside>
+
+  </article>
+  }
+</div>

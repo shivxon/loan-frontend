@@ -1,0 +1,40 @@
+<!-- 🔹 HEADER / NAVBAR -->
+
+
+
+
+<!-- 🔹 LOAN PAGE -->
+<main class="loan-details-view">
+  @if (product; as p) {
+  
+  <!-- 🔹 PAGE BANNER -->
+  <section class="loan-banner" [attr.data-slug]="slug">
+    <div class="banner-container">
+      <div class="banner-content">
+        <nav class="breadcrumbs">
+          <a routerLink="/">Home</a>
+          <span>/</span>
+          <span>{{ p.title }}</span>
+        </nav>
+        <h1>{{ p.title }} to Meet Your Financial Needs!</h1>
+        <p>{{ p.description }}</p>
+        <button class="primary-button" (click)="proceedToApply()">Apply Now</button>
+      </div>
+      <div class="banner-image">
+        <img [src]="bannerImage" [alt]="p.title">
+      </div>
+    </div>
+  </section>
+
+  <!-- 🔹 CONTENT AREA -->
+  <div class="loan-details-content">
+    <app-info-tabs [tabs]="loanTabs" [activeTabId]="activeTabId()" (tabChange)="activeTabId.set($event)"></app-info-tabs>
+  </div>
+
+  <!-- 🔹 STICKY CTA -->
+  <div class="sticky-cta">
+    <button (click)="proceedToApply()">Apply Now</button>
+  </div>
+
+  }
+</main>

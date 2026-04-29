@@ -1,39 +1,4 @@
 <div class="site-shell">
-  <header class="topbar">
-    <a class="brand" routerLink="/" fragment="top" aria-label="Shivam Loans home">
-      <span class="brand-mark" aria-hidden="true">
-        <span></span>
-      </span>
-      <span class="brand-copy">
-        <strong>Shivam Loans</strong>
-        <small>much more than money</small>
-      </span>
-    </a>
-
-    <nav class="primary-nav" aria-label="Primary navigation">
-      <a routerLink="/" fragment="dashboard">Dashboard</a>
-      <a routerLink="/loans">Loans</a>
-      <a routerLink="/" fragment="dashboard" (click)="selectTab('emi')">EMI</a>
-      <a routerLink="/" fragment="dashboard" (click)="selectTab('eligibility')">Eligibility</a>
-      <a routerLink="/about">About Us</a>
-      <a routerLink="/" fragment="contact">Contact</a>
-    </nav>
-
-    <div class="topbar-actions">
-      @if (currentUser(); as user) {
-      <span class="user-chip">{{ user.fullName }}</span>
-      <button class="ghost-button" type="button" (click)="logout()">Logout</button>
-      } @else {
-      <button class="ghost-button" type="button" (click)="openAuth('signup')">
-        Sign up
-      </button>
-      <button class="primary-button compact" type="button" (click)="openAuth('login')">
-        Sign in
-      </button>
-      }
-    </div>
-  </header>
-
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
@@ -50,10 +15,10 @@
         </p>
 
         <div class="hero-actions">
-          <a class="primary-button" [routerLink]="['/apply', 'personal-loan']">
+          <a class="primary-button" [routerLink]="['/loan', 'personal-loan']">
             Apply Now
           </a>
-          <a class="secondary-button" routerLink="/" fragment="dashboard" (click)="selectTab('emi')">
+          <a class="secondary-button" routerLink="/" fragment="dashboard" (click)="activeTab.set('emi')">
             Calculate EMI
           </a>
         </div>
@@ -119,7 +84,8 @@
 
       <div class="loan-type-grid">
         @for (product of loanProducts; track product.slug) {
-        <a class="loan-type-card" [routerLink]="['/apply', product.slug]">
+        <!-- <a class="loan-type-card" [routerLink]="['/apply', product.slug]"> -->
+        <a class="loan-type-card" [routerLink]="['/loan', product.slug]">
           <span>{{ product.shortName }}</span>
           <strong>{{ product.title }}</strong>
           <small>{{ product.maxAmount }} · {{ product.tenure }}</small>
@@ -156,191 +122,10 @@
     }
 
     <section class="dashboard-panel" id="dashboard" aria-labelledby="dashboard-title">
-      <div class="dashboard-heading">
-        <div>
-          <p class="section-kicker">Loan workspace</p>
-          <h2 id="dashboard-title">Dashboard Tabs</h2>
-        </div>
-        <a class="primary-button compact" [routerLink]="['/apply', 'personal-loan']">
-          Start Application
-        </a>
-      </div>
 
-      <div class="tabs" role="tablist" aria-label="Loan dashboard sections">
-        @for (tab of tabs; track tab.id) {
-        <button type="button" role="tab" [class.active]="activeTab() === tab.id"
-          [attr.aria-selected]="activeTab() === tab.id" [attr.aria-controls]="'panel-' + tab.id" [id]="'tab-' + tab.id"
-          (click)="selectTab(tab.id)">
-          {{ tab.label }}
-        </button>
-        }
-      </div>
 
-      <article class="tab-content" role="tabpanel" [id]="'panel-' + activeTabContent().id"
-        [attr.aria-labelledby]="'tab-' + activeTabContent().id">
-        <div class="tab-copy">
-          <p class="section-kicker">{{ activeTabContent().eyebrow }}</p>
-          <h3>{{ activeTabContent().title }}</h3>
-          <p>{{ activeTabContent().description }}</p>
-
-          <ul>
-            @for (point of activeTabContent().points; track point) {
-            <li>{{ point }}</li>
-            }
-          </ul>
-        </div>
-
-        <aside class="tab-aside" aria-label="Selected tab details">
-          @if (activeTabContent().id === 'emi') {
-          <div class="emi-widget">
-            <label>
-              <span>Loan amount</span>
-              <strong>{{ formatCurrency(loanAmount()) }}</strong>
-              <input type="range" min="50000" max="50000000" step="50000" [value]="loanAmount()"
-                (input)="updateLoanAmount($event)" />
-            </label>
-
-            <label>
-              <span>Tenure</span>
-              <strong>{{ tenureMonths() }} months</strong>
-              <input type="range" min="12" max="120" step="6" [value]="tenureMonths()" (input)="updateTenure($event)" />
-            </label>
-
-            <label>
-              <span>Interest rate</span>
-              <strong>{{ interestRate() }}%</strong>
-              <input type="range" min="8" max="40" step="0.5" [value]="interestRate()"
-                (input)="updateInterest($event)" />
-            </label>
-
-            <div class="emi-result">
-              <span>Monthly EMI</span>
-              <strong>{{ formatCurrency(monthlyEmi()) }}</strong>
-              <small>Total payable {{ formatCurrency(totalPayable()) }}</small>
-            </div>
-          </div>
-          } @else {
-          @for (metric of activeTabContent().metrics; track metric.label) {
-          <div class="metric-card">
-            <strong>{{ metric.value }}</strong>
-            <span>{{ metric.label }}</span>
-          </div>
-          }
-          }
-        </aside>
-      </article>
+      <app-info-tabs [tabs]="tabs" [activeTabId]="activeTab()" (tabChange)="activeTab.set($event)"></app-info-tabs>
     </section>
   </main>
 
-  <!-- <footer class="site-footer" id="contact">
-    <div>
-      <strong>Shivam Loans</strong>
-      <p>Digital loan assistance for personal loan customers.</p>
-    </div>
-    <nav aria-label="Footer navigation">
-      <a routerLink="/" fragment="dashboard">Dashboard</a>
-      <a routerLink="/about">About Us</a>
-      <a routerLink="/" fragment="dashboard" (click)="selectTab('fees')">Fees</a>
-      <a routerLink="/" fragment="dashboard" (click)="selectTab('faq')">FAQ</a>
-    </nav>
-    @if (currentUser()) {
-    <a class="secondary-button light" routerLink="/loans">Apply Now</a>
-    } @else {
-    <button class="secondary-button light" type="button" (click)="openAuth('login')">
-      Login with Phone
-    </button>
-    }
-  </footer> -->
-
-  <footer class="site-footer" id="contact">
-    <div class="footer-container">
-
-      <div class="footer-grid">
-        <!-- Brand -->
-        <div>
-          <strong>Shivam Loans</strong>
-          <p>Helping you compare, apply, and get the best loan offers from trusted lenders.</p>
-        </div>
-
-        <!-- Navigation -->
-        <div>
-          <strong>Company</strong>
-          <a routerLink="/">Dashboard</a>
-          <a routerLink="/about">About Us</a>
-          <a (click)="selectTab('fees')">Fees</a>
-          <a (click)="selectTab('faq')">FAQ</a>
-        </div>
-
-        <!-- Loans -->
-        <div>
-          <strong>Loans</strong>
-          <a routerLink="/apply/personal-loan">Personal Loan</a>
-          <a routerLink="/apply/home-loan">Home Loan</a>
-          <a routerLink="/apply/business-loan">Business Loan</a>
-        </div>
-
-        <!-- Contact -->
-        <div>
-          <strong>Contact</strong>
-          <p>+91 87555 40601</p>
-          <p>support@shivamloans.com</p>
-        </div>
-
-        <!-- CTA -->
-        <div class="footer-cta">
-          <strong>Need a loan?</strong>
-          <p>Check eligibility in 2 minutes</p>
-
-          @if (currentUser()) {
-          <a class="primary-button" routerLink="/loans">Apply Now</a>
-          } @else {
-          <button class="primary-button" (click)="openAuth('login')">
-            Check Eligibility
-          </button>
-          }
-        </div>
-
-        <div class="footer-trust">
-          <span>🔒 Secure</span>
-          <span>📄 Verified partners</span>
-          <span>⚡ Fast approval</span>
-        </div>
-      </div>
-
-      <!-- Bottom -->
-      <div class="footer-bottom">
-        <span>© 2026 Shivam Loans. All rights reserved.</span>
-
-        <div class="footer-social">
-          <a href="#" target="_blank" aria-label="WhatsApp">
-            <i class="fa-brands fa-whatsapp"></i>
-          </a>
-          <a href="#" target="_blank" aria-label="Twitter">
-            <i class="fa-brands fa-x-twitter"></i>
-          </a>
-          <a href="#" target="_blank" aria-label="Facebook">
-            <i class="fa-brands fa-facebook-f"></i>
-          </a>
-          <a href="#" target="_blank" aria-label="LinkedIn">
-            <i class="fa-brands fa-linkedin-in"></i>
-          </a>
-          <a href="#" target="_blank" aria-label="Instagram">
-            <i class="fa-brands fa-instagram"></i>
-          </a>
-          <a href="#" target="_blank" aria-label="YouTube">
-            <i class="fa-brands fa-youtube"></i>
-          </a>
-        </div>
-
-        <div class="footer-legal">
-          <a routerLink="/privacy-policy">Privacy Policy</a>
-          <a routerLink="/terms">Terms</a>
-        </div>
-      </div>
-
-    </div>
-  </footer>
 </div>
-
-<app-auth-modal [isOpen]="authModalOpen()" [mode]="authMode()" (closed)="closeAuth()" (modeChange)="setAuthMode($event)"
-  (authenticated)="handleAuthenticated($event)" />

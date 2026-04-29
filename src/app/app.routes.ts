@@ -5,6 +5,10 @@ import { ApplicationDetailComponent } from './application-detail/application-det
 import { DashboardComponent } from './dashboard/dashboard';
 import { LoanApplicationComponent } from './loan-application/loan-application';
 import { LoanProductsComponent } from './loan-products/loan-products';
+import { LoanDetailsComponent } from './loan-details/loan-details';
+
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions';
 
 export const routes: Routes = [
   {
@@ -16,6 +20,12 @@ export const routes: Routes = [
     path: 'loans',
     component: LoanProductsComponent,
     title: 'Choose Loan Type',
+  },
+  // ✅ NEW PAGE (NO AUTH)
+  {
+    path: 'loan/:loanType',
+    component: LoanDetailsComponent,
+    title: 'Loan Details',
   },
   {
     path: 'apply/:loanType',
@@ -33,6 +43,16 @@ export const routes: Routes = [
     path: 'about',
     component: AboutComponent,
     title: 'About Us — Shivam Loans',
+  },
+  {
+    path: 'privacy-policy',
+    component: PrivacyPolicyComponent,
+    title: 'Privacy Policy — Shivam Loans',
+  },
+  {
+    path: 'terms',
+    component: TermsConditionsComponent,
+    title: 'Terms and Conditions — Shivam Loans',
   },
   {
     path: '**',

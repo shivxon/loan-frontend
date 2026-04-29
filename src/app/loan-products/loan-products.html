@@ -1,14 +1,5 @@
 <main class="products-page">
-  <header class="products-header">
-    <a class="brand-link" routerLink="/">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span>Shivam Loans</span>
-    </a>
-    <nav aria-label="Application navigation">
-      <a routerLink="/">Dashboard</a>
-      <a routerLink="/loans">Loans</a>
-    </nav>
-  </header>
+
 
   <section class="products-hero">
     <p class="section-kicker">Formal applications</p>
@@ -44,7 +35,7 @@
           </div>
         </div>
 
-        <a class="apply-link" [routerLink]="['/apply', product.slug]">
+        <a class="apply-link" [routerLink]="['/loan', product.slug]">
           Fill Application
         </a>
       </article>

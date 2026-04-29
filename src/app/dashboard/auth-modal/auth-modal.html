@@ -1,152 +1,116 @@
 @if (isOpen) {
-  <div class="modal-backdrop" role="presentation" (click)="onBackdropClick($event)">
-    <section
-      class="auth-modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="auth-title"
-    >
-      <div class="modal-visual" aria-hidden="true">
-        <div class="person-illustration">
-          <div class="avatar-head"></div>
-          <div class="avatar-body"></div>
-          <div class="avatar-arm left"></div>
-          <div class="avatar-arm right"></div>
-        </div>
-        <div class="money-symbol symbol-one">₹</div>
-        <div class="money-symbol symbol-two">%</div>
-        <div class="money-symbol symbol-three">✓</div>
-        <div class="users-badge">50k Monthly Users</div>
+<div class="modal-backdrop" role="presentation" (click)="onBackdropClick($event)">
+  <section class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <div class="modal-visual" aria-hidden="true">
+      <div class="person-illustration">
+        <div class="avatar-head"></div>
+        <div class="avatar-body"></div>
+        <div class="avatar-arm left"></div>
+        <div class="avatar-arm right"></div>
+      </div>
+      <div class="money-symbol symbol-one">₹</div>
+      <div class="money-symbol symbol-two">%</div>
+      <div class="money-symbol symbol-three">✓</div>
+      <!-- <div class="users-badge">50k Monthly Users</div> -->
+    </div>
+
+    <form class="auth-form" (ngSubmit)="submit()" novalidate>
+      <button class="close-button" type="button" aria-label="Close" (click)="close()">
+        ×
+      </button>
+
+      <div class="mode-tabs" role="tablist" aria-label="Authentication mode">
+        <button type="button" role="tab" [class.active]="mode === 'login'" [attr.aria-selected]="mode === 'login'"
+          (click)="switchMode('login')">
+          Sign in
+        </button>
+        <button type="button" role="tab" [class.active]="mode === 'signup'" [attr.aria-selected]="mode === 'signup'"
+          (click)="switchMode('signup')">
+          Sign up
+        </button>
       </div>
 
-      <form class="auth-form" (ngSubmit)="submit()" novalidate>
-        <button class="close-button" type="button" aria-label="Close" (click)="close()">
-          ×
-        </button>
+      <h2 id="auth-title">{{ title }}</h2>
 
-        <div class="mode-tabs" role="tablist" aria-label="Authentication mode">
-          <button
-            type="button"
-            role="tab"
-            [class.active]="mode === 'login'"
-            [attr.aria-selected]="mode === 'login'"
-            (click)="switchMode('login')"
-          >
-            Sign in
+      @if (!otpSent) {
+      @if (mode === 'signup') {
+      <label class="field">
+        <span>Full Name</span>
+        <input type="text" name="fullName" autocomplete="name" [(ngModel)]="fullName"
+          [class.invalid]="submitted && !nameIsValid" />
+      </label>
+      @if (submitted && !nameIsValid) {
+      <p class="field-error">Enter your full name.</p>
+      }
+      }
+
+      <label class="field">
+        <span>Phone Number</span>
+        <div class="phone-row">
+          <span class="country-code">+91</span>
+          <input type="tel" name="phoneNumber" inputmode="numeric" autocomplete="tel-national" [ngModel]="phoneNumber"
+            (ngModelChange)="normalizePhone($event)" [class.invalid]="submitted && !phoneIsValid" maxlength="10" />
+        </div>
+      </label>
+      @if (submitted && !phoneIsValid) {
+      <p class="field-error">Enter a valid 10 digit Indian mobile number.</p>
+      }
+
+      <label class="consent">
+        <input type="checkbox" name="consent" [(ngModel)]="consentAccepted" />
+        <span>
+          I agree to the Shivam Loans
+          <a href="#contact">Privacy Policy</a>
+          and
+          <a href="#contact">Terms and Conditions</a>.
+        </span>
+      </label>
+      @if (submitted && !consentAccepted) {
+      <p class="field-error">Accept the terms to continue.</p>
+      }
+      } @else {
+      <div class="otp-panel">
+        <p class="success-message">
+          {{ otpRequestMessage() || 'OTP sent successfully.' }}
+        </p>
+
+        @if (devOtp()) {
+        <p class="demo-otp">Demo OTP: {{ devOtp() }}</p>
+        }
+
+        <label class="field otp-field">
+          <span>Enter 6 Digit OTP</span>
+          <input type="text" name="otpCode" inputmode="numeric" autocomplete="one-time-code" [ngModel]="otpCode"
+            (ngModelChange)="normalizeOtp($event)" [class.invalid]="otpSubmitted && !otpIsValid" maxlength="6" />
+        </label>
+        @if (otpSubmitted && !otpIsValid) {
+        <p class="field-error">Enter the 6 digit OTP.</p>
+        }
+
+        <div class="otp-actions">
+          <button type="button" class="link-button" (click)="resendOtp()" [disabled]="isSubmitting()">
+            Resend OTP
           </button>
-          <button
-            type="button"
-            role="tab"
-            [class.active]="mode === 'signup'"
-            [attr.aria-selected]="mode === 'signup'"
-            (click)="switchMode('signup')"
-          >
-            Sign up
+          <button type="button" class="link-button" (click)="editPhoneNumber()" [disabled]="isSubmitting()">
+            Change Number
           </button>
         </div>
+      </div>
+      }
 
-        <h2 id="auth-title">{{ title }}</h2>
+      @if (backendError()) {
+      <p class="field-error">{{ backendError() }}</p>
+      }
 
-        @if (!otpSent) {
-          @if (mode === 'signup') {
-            <label class="field">
-              <span>Full Name</span>
-              <input
-                type="text"
-                name="fullName"
-                autocomplete="name"
-                [(ngModel)]="fullName"
-                [class.invalid]="submitted && !nameIsValid"
-              />
-            </label>
-            @if (submitted && !nameIsValid) {
-              <p class="field-error">Enter your full name.</p>
-            }
-          }
+      <button class="submit-button" type="submit" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? (otpSent ? 'Verifying...' : 'Sending...') : actionLabel }}
+      </button>
 
-          <label class="field">
-            <span>Phone Number</span>
-            <div class="phone-row">
-              <span class="country-code">+91</span>
-              <input
-                type="tel"
-                name="phoneNumber"
-                inputmode="numeric"
-                autocomplete="tel-national"
-                [ngModel]="phoneNumber"
-                (ngModelChange)="normalizePhone($event)"
-                [class.invalid]="submitted && !phoneIsValid"
-                maxlength="10"
-              />
-            </div>
-          </label>
-          @if (submitted && !phoneIsValid) {
-            <p class="field-error">Enter a valid 10 digit Indian mobile number.</p>
-          }
-
-          <label class="consent">
-            <input type="checkbox" name="consent" [(ngModel)]="consentAccepted" />
-            <span>
-              I agree to the Shivam Loans
-              <a href="#contact">Privacy Policy</a>
-              and
-              <a href="#contact">Terms and Conditions</a>.
-            </span>
-          </label>
-          @if (submitted && !consentAccepted) {
-            <p class="field-error">Accept the terms to continue.</p>
-          }
-        } @else {
-          <div class="otp-panel">
-            <p class="success-message">
-              {{ otpRequestMessage() || 'OTP sent successfully.' }}
-            </p>
-
-            @if (devOtp()) {
-              <p class="demo-otp">Demo OTP: {{ devOtp() }}</p>
-            }
-
-            <label class="field otp-field">
-              <span>Enter 6 Digit OTP</span>
-              <input
-                type="text"
-                name="otpCode"
-                inputmode="numeric"
-                autocomplete="one-time-code"
-                [ngModel]="otpCode"
-                (ngModelChange)="normalizeOtp($event)"
-                [class.invalid]="otpSubmitted && !otpIsValid"
-                maxlength="6"
-              />
-            </label>
-            @if (otpSubmitted && !otpIsValid) {
-              <p class="field-error">Enter the 6 digit OTP.</p>
-            }
-
-            <div class="otp-actions">
-              <button type="button" class="link-button" (click)="resendOtp()" [disabled]="isSubmitting()">
-                Resend OTP
-              </button>
-              <button type="button" class="link-button" (click)="editPhoneNumber()" [disabled]="isSubmitting()">
-                Change Number
-              </button>
-            </div>
-          </div>
-        }
-
-        @if (backendError()) {
-          <p class="field-error">{{ backendError() }}</p>
-        }
-
-        <button class="submit-button" type="submit" [disabled]="isSubmitting()">
-          {{ isSubmitting() ? (otpSent ? 'Verifying...' : 'Sending...') : actionLabel }}
-        </button>
-
-        <div class="trust-badge">
+      <!-- <div class="trust-badge">
           <span aria-hidden="true">✓</span>
           ISO/IEC 27001:2022 Certified
-        </div>
-      </form>
-    </section>
-  </div>
+        </div> -->
+    </form>
+  </section>
+</div>
 }

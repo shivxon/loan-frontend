@@ -547,7 +547,7 @@
   letter-spacing: 0;
 }
 
-.tab-copy > p {
+.tab-copy>p {
   margin-top: 18px;
   font-size: 17px;
 }
@@ -958,4 +958,252 @@
   color: #7a8798;
   font-size: 13px;
   font-weight: 700;
+}
+
+/* =========================
+   FINAL FOOTER (FIXED)
+========================= */
+
+.site-footer {
+  background: #17243a;
+  color: #ffffff;
+  padding: 48px 20px 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Container */
+.footer-container {
+  // width: min(1180px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+
+}
+
+/* GRID */
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 40px;
+}
+
+/* Columns */
+.footer-grid>div {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Headings */
+.footer-grid strong {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+/* Links */
+.footer-grid a {
+  font-size: 14px;
+  color: #ccd7e5;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.footer-grid a:hover {
+  color: #ef3c50;
+}
+
+/* Text */
+.footer-grid p {
+  font-size: 14px;
+  color: #ccd7e5;
+  margin: 0;
+}
+
+/* CTA FIX */
+.footer-cta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.footer-cta .primary-button {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Bottom bar */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 24px;
+}
+
+/* Legal */
+.footer-legal {
+  display: flex;
+  gap: 18px;
+}
+
+.footer-legal a {
+  font-size: 13px;
+  color: #9fb2c9;
+  font-weight: 700;
+}
+
+.footer-legal a:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.site-footer {
+  background: linear-gradient(180deg, #17243a 0%, #101a2b 100%);
+  color: #ffffff;
+  padding: 72px 24px 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle glow effect */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(239, 60, 80, 0.18), transparent 70%);
+}
+
+.footer-grid>div:first-child strong {
+  font-size: 20px;
+}
+
+.footer-grid>div:first-child p {
+  max-width: 240px;
+  line-height: 1.7;
+}
+
+.footer-cta {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid #2b3a55;
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.footer-cta strong {
+  font-size: 16px;
+}
+
+.footer-cta p {
+  font-size: 13px;
+  color: #9fb2c9;
+}
+
+.footer-cta .primary-button {
+  margin-top: 6px;
+}
+
+.footer-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.footer-trust span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  font-size: 12px;
+  font-weight: 800;
+  color: #d6e2f1;
+}
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer-social a {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ccd7e5;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+/* Hover effects (brand colors) */
+.footer-social a:hover {
+  transform: translateY(-2px);
+}
+
+/* Individual hover colors */
+.footer-social a:hover:nth-child(1) {
+  background: #25D366;
+  color: #fff;
+}
+
+.footer-social a:hover:nth-child(2) {
+  background: #000000;
+  color: #fff;
+}
+
+.footer-social a:hover:nth-child(3) {
+  background: #1877F2;
+  color: #fff;
+}
+
+.footer-social a:hover:nth-child(4) {
+  background: #0A66C2;
+  color: #fff;
+}
+
+.footer-social a:hover:nth-child(5) {
+  background: #E4405F;
+  color: #fff;
+}
+
+.footer-social a:hover:nth-child(6) {
+  background: #FF0000;
+  color: #fff;
 }

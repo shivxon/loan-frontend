@@ -53,7 +53,7 @@ export class DashboardComponent {
   protected readonly myApplications = signal<LoanApplicationSummary[]>([]);
   protected readonly loadingApplications = signal(false);
 
-  protected readonly loanAmount = signal(750000);
+  protected readonly loanAmount = signal(50000);
   protected readonly tenureMonths = signal(36);
   protected readonly interestRate = signal(11.5);
 

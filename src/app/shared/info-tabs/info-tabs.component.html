@@ -63,6 +63,47 @@
             }
           </div>
         </section>
+      }
+
+      @if (content.id === 'reviews' && content.reviews?.length) {
+        <div class="reviews-carousel">
+          <div class="carousel-viewport">
+            <div class="carousel-track" [style.transform]="'translateX(' + (-reviewIndex() * 100) + '%)'">
+              @for (review of content.reviews; track review.id) {
+                <div class="review-slide">
+                  <div class="review-card">
+                    <div class="review-header">
+                      <img [src]="review.userAvatar" [alt]="review.userName" class="user-avatar">
+                      <div class="user-meta">
+                        <h4>{{ review.userName }}</h4>
+                        <span>{{ review.userRole }}</span>
+                      </div>
+                      <div class="review-rating">
+                        @for (star of [1,2,3,4,5]; track star) {
+                          <span class="star" [class.filled]="star <= review.rating">★</span>
+                        }
+                      </div>
+                    </div>
+                    <p class="review-comment">"{{ review.comment }}"</p>
+                    <div class="review-footer">
+                      <span class="review-date">{{ review.date }}</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+          
+          <div class="carousel-controls">
+            <button (click)="prevReview()" class="nav-btn" aria-label="Previous review">←</button>
+            <div class="carousel-dots">
+              @for (r of content.reviews; track r.id; let i = $index) {
+                <button class="dot" [class.active]="i === reviewIndex()" (click)="setReview(i)" [aria-label]="'Go to review ' + (i + 1)"></button>
+              }
+            </div>
+            <button (click)="nextReview()" class="nav-btn" aria-label="Next review">→</button>
+          </div>
+        </div>
       } @else if (content.points?.length) {
         <!-- NORMAL CONTENT -->
         <ul>
@@ -78,29 +119,79 @@
       @if (content.id === 'emi') {
         <!-- EMI CALCULATOR -->
         <div class="emi-widget">
-          <label>
-            <span>Loan amount</span>
-            <strong>{{ formatCurrency(loanAmount()) }}</strong>
-            <input type="range" min="50000" max="50000000" step="50000" [value]="loanAmount()"
-              (input)="updateLoanAmount($event)" />
-          </label>
-          <label>
-            <span>Tenure</span>
-            <strong>{{ tenureMonths() }} months</strong>
-            <input type="range" min="12" max="120" step="6" [value]="tenureMonths()" (input)="updateTenure($event)" />
-          </label>
-          <label>
-            <span>Interest rate</span>
-            <strong>{{ interestRate() }}%</strong>
-            <input type="range" min="8" max="40" step="0.5" [value]="interestRate()"
-              (input)="updateInterest($event)" />
-          </label>
+          @if (content.bankOffers; as offers) {
+            <div class="bank-selector">
+              <span class="label">Select Your Bank (Compare Multiple)</span>
+              <div class="bank-chips">
+                @for (bank of offers.slice(0, 3); track bank.id) {
+                  <button type="button" class="bank-chip" 
+                    [class.active]="selectedBanks().includes(bank.id)" 
+                    (click)="toggleBank(bank)">
+                    <div class="chip-content">
+                      @if (bank.bankLogo) {
+                        <img [src]="bank.bankLogo" [alt]="bank.bankName" class="bank-logo">
+                      }
+                      <span class="bank-name">{{ bank.bankName }}</span>
+                    </div>
+                    <span class="bank-rate">{{ bank.interestRate }}%</span>
+                  </button>
+                }
+                @if (offers.length > 3) {
+                  <button type="button" class="bank-chip more" (click)="openBankModal()">
+                    <span class="bank-name">+ View More</span>
+                    <span class="bank-rate">{{ offers.length - 3 }} Banks</span>
+                  </button>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="input-group">
+            <label>
+              <span>Loan amount</span>
+              <strong>{{ formatCurrency(loanAmount()) }}</strong>
+              <input type="range" min="50000" max="50000000" step="50000" [value]="loanAmount()"
+                (input)="updateLoanAmount($event)" />
+            </label>
+            <label>
+              <span>Tenure</span>
+              <strong>{{ tenureMonths() }} months</strong>
+              <input type="range" min="12" max="120" step="6" [value]="tenureMonths()" (input)="updateTenure($event)" />
+            </label>
+            <label>
+              <span>Interest rate</span>
+              <strong>{{ interestRate() }}%</strong>
+              <input type="range" min="8" max="40" step="0.5" [value]="interestRate()"
+                (input)="updateInterest($event)" />
+            </label>
+          </div>
+
           <div class="emi-result">
             <div class="emi-main">
               <span>Monthly EMI</span>
               <strong>{{ formatCurrency(monthlyEmi()) }}</strong>
             </div>
           </div>
+
+          @if (bankComparison().length > 0) {
+            <div class="bank-comparison">
+              <h4>Bank Comparison</h4>
+              <div class="comparison-table">
+                <div class="table-header">
+                  <span>Bank</span>
+                  <span>Rate</span>
+                  <span>EMI</span>
+                </div>
+                @for (item of bankComparison(); track item.id) {
+                  <div class="table-row">
+                    <strong>{{ item.bankName }}</strong>
+                    <span>{{ item.interestRate }}%</span>
+                    <strong>{{ formatCurrency(item.emi) }}</strong>
+                  </div>
+                }
+              </div>
+            </div>
+          }
 
           <div class="emi-visuals">
             <div class="chart-box">
@@ -147,5 +238,45 @@
     </aside>
 
   </article>
+  }
+  @if (isBankModalOpen()) {
+    <div class="bank-modal-overlay" (click)="closeBankModal()">
+      <div class="bank-modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Select Your Bank</h3>
+          <button class="close-btn" (click)="closeBankModal()">×</button>
+        </div>
+        <div class="search-bar">
+          <input type="text" placeholder="Search for a bank..." 
+            [value]="bankSearchTerm()" 
+            (input)="bankSearchTerm.set($any($event.target).value)">
+        </div>
+        <div class="bank-list">
+          @for (bank of filteredBanks(); track bank.id) {
+            <div class="bank-list-item" [class.selected]="selectedBanks().includes(bank.id)" (click)="selectBankFromModal(bank)">
+              <div class="bank-brand">
+                @if (bank.bankLogo) {
+                  <img [src]="bank.bankLogo" [alt]="bank.bankName" class="list-logo">
+                }
+                <div class="bank-info">
+                  <strong>{{ bank.bankName }}</strong>
+                  <span>Interest rate starts at {{ bank.interestRate }}%</span>
+                </div>
+              </div>
+              <div class="selection-indicator">
+                @if (selectedBanks().includes(bank.id)) {
+                  <span class="check">✓</span>
+                }
+              </div>
+            </div>
+          }
+          @if (filteredBanks().length === 0) {
+            <div class="no-results">
+              No banks found matching "{{ bankSearchTerm() }}"
+            </div>
+          }
+        </div>
+      </div>
+    </div>
   }
 </div>

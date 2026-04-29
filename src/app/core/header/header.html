@@ -1,4 +1,4 @@
-<header class="topbar">
+<header class="topbar" [class.is-scrolled]="isScrolled()">
   <a class="brand" routerLink="/" aria-label="Shivam Loans home">
     <span class="brand-mark" aria-hidden="true">
       <span></span>
@@ -10,12 +10,12 @@
   </a>
 
   <nav class="primary-nav" aria-label="Primary navigation">
-    <a routerLink="/" [queryParams]="{ tab: 'overview' }">Dashboard</a>
-    <a routerLink="/loans">Loans</a>
-    <a routerLink="/" [queryParams]="{ tab: 'emi' }">EMI</a>
-    <a routerLink="/" [queryParams]="{ tab: 'eligibility' }">Eligibility</a>
-    <a routerLink="/about">About Us</a>
-    <a routerLink="/" fragment="contact">Contact</a>
+    <a routerLink="/" [queryParams]="{ tab: 'overview' }" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
+    <a routerLink="/loans" routerLinkActive="active">Loans</a>
+    <a routerLink="/" [queryParams]="{ tab: 'emi' }" routerLinkActive="active">EMI</a>
+    <a routerLink="/" [queryParams]="{ tab: 'eligibility' }" routerLinkActive="active">Eligibility</a>
+    <a routerLink="/about" routerLinkActive="active">About Us</a>
+    <a routerLink="/" fragment="contact" routerLinkActive="active">Contact</a>
   </nav>
 
   <div class="topbar-actions">

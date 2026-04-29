@@ -124,7 +124,7 @@
     <section class="dashboard-panel" id="dashboard" aria-labelledby="dashboard-title">
 
 
-      <app-info-tabs [tabs]="tabs" [activeTabId]="activeTab()" (tabChange)="activeTab.set($event)"></app-info-tabs>
+      <app-info-tabs [tabs]="tabs" [activeTabId]="activeTab()" (tabChange)="onTabChange($event)"></app-info-tabs>
     </section>
   </main>
 

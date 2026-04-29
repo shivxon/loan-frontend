@@ -18,11 +18,13 @@
       </div>
 
       <!-- Loans -->
-      <div>
+      <div class="footer-loans-column">
         <strong>Loans</strong>
-        <a routerLink="/loan/personal-loan">Personal Loan</a>
-        <a routerLink="/loan/home-loan">Home Loan</a>
-        <a routerLink="/loan/business-loan">Business Loan</a>
+        <div class="loans-links">
+          @for (product of loanProducts; track product.slug) {
+            <a [routerLink]="['/loan', product.slug]">{{ product.title }}</a>
+          }
+        </div>
       </div>
 
       <!-- Contact -->

@@ -49,6 +49,12 @@ export class DashboardComponent {
       const tab = params.get('tab');
       if (tab) {
         this.activeTab.set(tab);
+        // Scroll to dashboard section if tab is selected via URL
+        if (isPlatformBrowser(this.platformId)) {
+          setTimeout(() => {
+            document.getElementById('dashboard')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        }
       }
     });
 
@@ -83,6 +89,15 @@ export class DashboardComponent {
       faulted: 'Needs Attention',
     };
     return map[status] ?? status;
+  }
+
+  protected onTabChange(tabId: string): void {
+    this.activeTab.set(tabId);
+    void this.router.navigate([], {
+      queryParams: { tab: tabId },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
   }
 
   private loadMyApplications(): void {

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { LOAN_PRODUCTS } from '../../loan-products/loan-products.data';
 
 @Component({
   selector: 'app-footer',
@@ -14,6 +15,7 @@ export class FooterComponent {
   private readonly router = inject(Router);
 
   protected readonly currentUser = this.authService.currentUser;
+  protected readonly loanProducts = LOAN_PRODUCTS;
 
   protected openAuth(mode: 'login' | 'signup'): void {
     void this.router.navigate([], {

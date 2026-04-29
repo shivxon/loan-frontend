@@ -1,4 +1,5 @@
 import { InfoTab } from '../shared/info-tabs/info-tabs.types';
+import { getBankOffersForLoan } from '../shared/banks.data';
 
 export const DASHBOARD_TABS: InfoTab[] = [
     {
@@ -86,6 +87,7 @@ export const DASHBOARD_TABS: InfoTab[] = [
             'Use the estimate to guide the customer into signup.',
         ],
         metrics: [],
+        bankOffers: getBankOffersForLoan('personal-loan')
     },
     {
         id: 'fees',
@@ -121,6 +123,35 @@ export const DASHBOARD_TABS: InfoTab[] = [
             { value: '4.8', label: 'Service rating' },
             { value: '50k+', label: 'Monthly users' },
             { value: '92%', label: 'Digital completion' },
+        ],
+        reviews: [
+            {
+                id: '1',
+                userName: 'Rahul Sharma',
+                userRole: 'Business Owner',
+                userAvatar: 'https://i.pravatar.cc/150?u=rahul',
+                rating: 5,
+                comment: 'The process was incredibly smooth. I got my business loan approved within 24 hours. The dashboard tracking is a game changer!',
+                date: '2 days ago'
+            },
+            {
+                id: '2',
+                userName: 'Priya Verma',
+                userRole: 'Software Engineer',
+                userAvatar: 'https://i.pravatar.cc/150?u=priya',
+                rating: 5,
+                comment: 'Highly recommended for anyone looking for quick personal loans. Minimal documentation and excellent support from the team.',
+                date: '1 week ago'
+            },
+            {
+                id: '3',
+                userName: 'Amit Patel',
+                userRole: 'Freelancer',
+                userAvatar: 'https://i.pravatar.cc/150?u=amit',
+                rating: 4,
+                comment: 'Very transparent platform. I loved the EMI calculator feature which helped me decide my loan amount properly.',
+                date: '3 days ago'
+            }
         ],
     },
     {

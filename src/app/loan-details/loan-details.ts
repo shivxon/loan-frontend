@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { getLoanFaqs } from './loan-faqs';
 import { InfoTabsComponent } from '../shared/info-tabs/info-tabs.component';
 import { InfoTab } from '../shared/info-tabs/info-tabs.types';
+import { getBankOffersForLoan } from '../shared/banks.data';
 
 @Component({
   selector: 'app-loan-details',
@@ -113,7 +114,8 @@ export class LoanDetailsComponent {
           label: 'EMI Calculator',
           eyebrow: 'EMI Estimate',
           title: 'Calculate your monthly EMI',
-          description: 'Estimate your monthly repayment before you apply for the loan.'
+          description: 'Estimate your monthly repayment before you apply for the loan.',
+          bankOffers: getBankOffersForLoan(this.slug || 'personal-loan')
         },
         {
           id: 'faq',

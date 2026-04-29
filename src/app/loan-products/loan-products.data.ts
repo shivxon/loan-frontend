@@ -349,18 +349,21 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
       {
         "name": "annualTurnover",
         "label": "Annual turnover",
+        "placeholder": "Enter turnover",
         "type": "number",
         "required": true
       },
       {
         "name": "stockValue",
         "label": "Current stock value",
+        "placeholder": "Enter stock value",
         "type": "number",
         "required": true
       },
       {
         "name": "debtorValue",
         "label": "Receivables value",
+        "placeholder": "Enter receivables value",
         "type": "number",
         "required": true
       }
@@ -386,12 +389,14 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
       {
         "name": "bankingTurnover",
         "label": "Monthly banking turnover",
+        "placeholder": 'Enter turnover',
         "type": "number",
         "required": true
       },
       {
         "name": "existingLimit",
         "label": "Existing OD/CC limit",
+        "placeholder": 'Enter limit',
         "type": "number",
         "required": false
       }
@@ -418,16 +423,18 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
       {
         "name": "loanPurpose",
         "label": "Purpose of loan",
+        "placeholder": "Enter purpose of loan",
         "type": "textarea",
         "required": true
       },
       {
         "name": "requiredAmount",
         "label": "Loan amount",
+        "placeholder": "Enter loan amount",
         "type": "number",
         "required": true
       }
-    ],
+    ]
 
   },
   {
@@ -451,6 +458,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
       {
         "name": "projectType",
         "label": "Project type",
+        "placeholder": "Select project type",
         "type": "select",
         "required": true,
         "options": ["Residential", "Commercial", "Mixed-use"]
@@ -458,17 +466,19 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
       {
         "name": "projectCost",
         "label": "Total project cost",
+        "placeholder": "Enter project cost",
         "type": "number",
         "required": true
       },
       {
         "name": "landOwned",
         "label": "Do you own the land?",
+        "placeholder": "Select Yes or No",
         "type": "select",
         "required": true,
         "options": ["Yes", "No"]
       }
-    ],
+    ]
   }
 ];
 

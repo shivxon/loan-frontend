@@ -2,6 +2,7 @@ import { Component, PLATFORM_ID, computed, effect, inject, signal } from '@angul
 import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { take } from 'rxjs';
 import { InfoTabsComponent } from '../shared/info-tabs/info-tabs.component';
 import { AuthService } from '../auth/auth.service';
 
@@ -12,6 +13,9 @@ import {
 } from '../loan-application/loan-applications.service';
 import { DASHBOARD_JOURNEY, DASHBOARD_STATS } from './dashboard.data';
 import { DASHBOARD_TABS } from './dashboard.config';
+import { Store } from '@ngrx/store';
+import { selectDraft } from '../loan-application/state/loan.selectors';
+import * as LoanActions from '../loan-application/state/loan.actions';
 
 
 
@@ -27,6 +31,7 @@ export class DashboardComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly loanApplicationsService = inject(LoanApplicationsService);
+  private readonly store = inject(Store);
 
   protected readonly activeTab = signal<string>('overview');
   protected readonly currentUser = this.authService.currentUser;
@@ -40,8 +45,6 @@ export class DashboardComponent {
   protected readonly journey = DASHBOARD_JOURNEY;
 
   protected readonly tabs = DASHBOARD_TABS;
-
-
 
   constructor() {
     // Handle tab selection from query params globally
@@ -63,12 +66,23 @@ export class DashboardComponent {
       effect(() => {
         if (this.authService.isLoggedIn()) {
           this.loadMyApplications();
+          this.store.dispatch(LoanActions.loadDraft());
         }
       });
     }
   }
 
 
+
+  protected readonly isAllApplicationsModalOpen = signal(false);
+
+  protected openAllApplicationsModal(): void {
+    this.isAllApplicationsModalOpen.set(true);
+  }
+
+  protected closeAllApplicationsModal(): void {
+    this.isAllApplicationsModalOpen.set(false);
+  }
 
   protected formatDate(dateStr: string): string {
     if (!dateStr) return '—';
@@ -97,6 +111,38 @@ export class DashboardComponent {
       queryParams: { tab: tabId },
       queryParamsHandling: 'merge',
       replaceUrl: true
+    });
+  }
+
+  protected handleContinue(): void {
+    this.store.select(selectDraft).pipe(take(1)).subscribe((draft) => {
+      if (!this.authService.isLoggedIn()) {
+        void this.router.navigate([], {
+          queryParams: {
+            modal: 'login',
+            redirect: draft ? `/apply/${draft.loanType}` : this.router.url
+          },
+          queryParamsHandling: 'merge'
+        });
+        return;
+      }
+
+      // 1. Prioritize half-filled (draft) applications from NgRx Store
+      if (draft) {
+        void this.router.navigate(['/apply', draft.loanType]);
+        return;
+      }
+
+      // 2. Otherwise, check for submitted applications needing attention
+      const apps = this.myApplications();
+      const resumeApp = apps.find(app => app.status === 'faulted') ||
+                        apps.find(app => app.status === 'review' || app.status === 'submitted');
+
+      if (resumeApp) {
+        void this.router.navigate(['/application', resumeApp.referenceNumber]);
+      } else {
+        void this.router.navigate(['/loans']);
+      }
     });
   }
 

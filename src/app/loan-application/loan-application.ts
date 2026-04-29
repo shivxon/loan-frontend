@@ -12,6 +12,9 @@ import {
 import { AuthService } from '../auth/auth.service';
 import { LoanProductsService } from '../loan-products/loan-products.service';
 import { LoanApplicationsService } from './loan-applications.service';
+import { Store } from '@ngrx/store';
+import * as LoanActions from './state/loan.actions';
+import { selectDraft } from './state/loan.selectors';
 
 @Component({
   selector: 'app-loan-application',
@@ -26,6 +29,7 @@ export class LoanApplicationComponent {
   private readonly authService = inject(AuthService);
   private readonly loanProductsService = inject(LoanProductsService);
   private readonly loanApplicationsService = inject(LoanApplicationsService);
+  private readonly store = inject(Store);
 
   protected readonly loanProduct = signal<LoanProduct>(LOAN_PRODUCTS[0]);
   protected readonly submitted = signal(false);
@@ -149,7 +153,7 @@ export class LoanApplicationComponent {
     },
   ];
 
-  protected readonly formData: Record<string, string> = {
+  protected formData: Record<string, string> = {
     fullName: '',
     phoneNumber: '',
     email: '',
@@ -179,6 +183,17 @@ export class LoanApplicationComponent {
       this.loanProduct.set(product);
       this.ensureProductFields(product);
       this.prefillLoggedInUser();
+
+      // Dispatch load draft from API
+      this.store.dispatch(LoanActions.loadDraft());
+
+      // Listen for draft changes
+      this.store.select(selectDraft).pipe(takeUntilDestroyed()).subscribe((draft) => {
+        if (draft && draft.loanType === product.slug) {
+          this.formData = { ...this.formData, ...draft.formData };
+        }
+      });
+
       this.submitted.set(false);
       this.applicationSaved.set(false);
       this.saveError.set('');
@@ -217,6 +232,10 @@ export class LoanApplicationComponent {
     }
 
     this.formData[field.name] = nextValue;
+    this.store.dispatch(LoanActions.saveDraft({
+      loanType: this.loanProduct().slug,
+      formData: this.formData
+    }));
   }
 
   protected isFieldInvalid(field: LoanApplicationField): boolean {
@@ -274,6 +293,7 @@ export class LoanApplicationComponent {
           this.isSaving.set(false);
           this.referenceNumber.set(response.referenceNumber);
           this.applicationSaved.set(true);
+          this.store.dispatch(LoanActions.clearDraft());
           globalThis.scrollTo({ top: 0, behavior: 'smooth' });
         },
         error: (error: { error?: { message?: string } }) => {

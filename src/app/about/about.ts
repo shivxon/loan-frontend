@@ -10,8 +10,8 @@ import { RouterLink } from '@angular/router';
 export class AboutComponent {
   protected readonly stats = [
     { value: '10+', label: 'Years of Service' },
-    { value: '50K+', label: 'Happy Customers' },
-    { value: '₹500Cr+', label: 'Loans Disbursed' },
+    { value: '1K+', label: 'Happy Customers' },
+    { value: '₹50Cr+', label: 'Loans Disbursed' },
     { value: '15+', label: 'Lending Partners' },
   ];
 
@@ -39,9 +39,8 @@ export class AboutComponent {
   ];
 
   protected readonly team = [
-    { name: 'Shivam Gupta', role: 'Founder & CEO', initials: 'SG' },
-    { name: 'Priya Sharma', role: 'Head of Operations', initials: 'PS' },
-    { name: 'Rahul Verma', role: 'Chief Technology Officer', initials: 'RV' },
-    { name: 'Anita Desai', role: 'Head of Partnerships', initials: 'AD' },
+    { name: 'Shivam Vashishtha', role: 'Founder & CEO', initials: 'SV' },
+    { name: 'Vinay Vashishtha', role: 'Head of Operations', initials: 'VV' },
+
   ];
 }

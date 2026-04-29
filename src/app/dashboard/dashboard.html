@@ -48,7 +48,7 @@
             <span class="is-complete"></span>
             <span></span>
           </div>
-          <a [routerLink]="['/apply', 'personal-loan']">Continue</a>
+          <button type="button" class="continue-btn" (click)="handleContinue()">Continue</button>
         </div>
         <div class="floating-note note-one">
           <span aria-hidden="true">₹</span>
@@ -101,9 +101,14 @@
           <p class="section-kicker">Your applications</p>
           <h2 id="my-apps-title">My Applications</h2>
         </div>
+        @if (myApplications().length > 3) {
+          <button class="view-all-btn" (click)="openAllApplicationsModal()">
+            View All ({{ myApplications().length }})
+          </button>
+        }
       </div>
       <div class="my-apps-scroll">
-        @for (app of myApplications(); track app._id) {
+        @for (app of myApplications().slice(0, 3); track app._id) {
         <a class="app-card" [routerLink]="['/application', app.referenceNumber]">
           <div class="app-card-top">
             <strong class="app-title">{{ app.loanTitle }}</strong>
@@ -128,4 +133,35 @@
     </section>
   </main>
 
+  @if (isAllApplicationsModalOpen()) {
+    <div class="apps-modal-overlay" (click)="closeAllApplicationsModal()">
+      <div class="apps-modal-content" (click)="$event.stopPropagation()">
+        <header class="modal-header">
+          <div class="header-text">
+            <h2>My Applications</h2>
+            <p>All your submitted loan requests</p>
+          </div>
+          <button class="close-btn" (click)="closeAllApplicationsModal()">×</button>
+        </header>
+        
+        <div class="modal-body">
+          @for (app of myApplications(); track app._id) {
+            <a class="modal-app-item" [routerLink]="['/application', app.referenceNumber]" (click)="closeAllApplicationsModal()">
+              <div class="item-info">
+                <strong>{{ app.loanTitle }}</strong>
+                <div class="item-meta">
+                  <span class="ref">{{ app.referenceNumber }}</span>
+                  <span class="dot">•</span>
+                  <span class="date">{{ formatDate(app.createdAt) }}</span>
+                </div>
+              </div>
+              <span class="status-badge" [attr.data-status]="app.status">
+                {{ statusLabel(app.status) }}
+              </span>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  }
 </div>

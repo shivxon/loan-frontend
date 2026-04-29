@@ -68,4 +68,21 @@ export class LoanApplicationsService {
       `${this.apiBaseUrl}/tracking/${referenceNumber}`,
     );
   }
+
+  saveDraft(loanType: string, formData: Record<string, string>): Observable<void> {
+    return this.http.post<void>(`${this.apiBaseUrl}/applications/draft`, {
+      loanType,
+      formData,
+    });
+  }
+
+  getDraft(): Observable<{ loanType: string; formData: Record<string, string> }> {
+    return this.http.get<{ loanType: string; formData: Record<string, string> }>(
+      `${this.apiBaseUrl}/applications/draft`,
+    );
+  }
+
+  deleteDraft(): Observable<void> {
+    return this.http.delete<void>(`${this.apiBaseUrl}/applications/draft`);
+  }
 }

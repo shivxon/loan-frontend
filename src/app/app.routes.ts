@@ -9,6 +9,7 @@ import { LoanDetailsComponent } from './loan-details/loan-details';
 
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions';
+import { formatLoanType } from './utils/format.util';
 
 export const routes: Routes = [
   {
@@ -25,12 +26,27 @@ export const routes: Routes = [
   {
     path: 'loan/:loanType',
     component: LoanDetailsComponent,
-    title: 'Loan Details',
+    title: (route) => {
+      const formatted = formatLoanType(route.params['loanType']);
+      return `${formatted} – Interest Rates, Eligibility | Shivam Loans`;
+    },
   },
   {
     path: 'loan/:loanType/faqs',
     loadComponent: () => import('./loan-details/loan-faq-page/loan-faq-page').then(m => m.LoanFaqPageComponent),
-    title: 'Loan FAQ\'s',
+    title: (route) => {
+      const formatted = formatLoanType(route.params['loanType']);
+      return `${formatted} FAQs | Shivam Loans`
+    },
+
+  },
+
+  {
+    path: 'faqs',
+    loadComponent: () =>
+      import('./loan-details/loan-faq-page/loan-faq-page')
+        .then(m => m.LoanFaqPageComponent),
+    title: 'Frequently Asked Questions',
   },
   {
     path: 'apply/:loanType',

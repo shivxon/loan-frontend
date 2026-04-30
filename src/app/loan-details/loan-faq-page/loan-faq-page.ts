@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, OnDestroy, signal, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { getLoanFaqs } from '../loan-faqs';
 import { findLoanProduct } from '../../loan-products/loan-products.data';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-loan-faq-page',
@@ -14,17 +15,17 @@ import { findLoanProduct } from '../../loan-products/loan-products.data';
         <nav class="breadcrumbs">
           <a routerLink="/">Home</a>
           <span>/</span>
-          <a [routerLink]="['/loan', slug]">{{ product.title }}</a>
+          <a [routerLink]="['/loan', slug()]">{{ product().title }}</a>
           <span>/</span>
           <span>FAQ's</span>
         </nav>
-        <h1>{{ product.title }} - Frequently Asked Questions</h1>
-        <p>Everything you need to know about our {{ product.title }} product.</p>
+        <h1>{{ product().title }} - Frequently Asked Questions</h1>
+        <p>Everything you need to know about our {{ product().title }} product.</p>
       </div>
 
       <div class="faq-grid">
         <div class="faq-list">
-          @for (faq of faqs; track faq.question) {
+          @for (faq of faqs(); track faq.question) {
             <div class="faq-item" [class.open]="faq.open">
               <div class="faq-q" (click)="faq.open = !faq.open">
                 <span>{{ faq.question }}</span>
@@ -162,9 +163,29 @@ import { findLoanProduct } from '../../loan-products/loan-products.data';
     }
   `]
 })
-export class LoanFaqPageComponent {
+export class LoanFaqPageComponent implements OnInit, OnDestroy {
+  private platformId = inject(PLATFORM_ID);
   private route = inject(ActivatedRoute);
-  slug = this.route.snapshot.paramMap.get('loanType') || 'general';
-  product = findLoanProduct(this.slug) || { title: 'Shivam Loans', description: 'General frequently asked questions about our platform and services.' };
-  faqs = getLoanFaqs(this.slug);
+  private destroy$ = new Subject<void>();
+
+  slug = signal<string>('general');
+  product = signal<any>({ title: 'Shivam Loans', description: 'General FAQ\'s' });
+  faqs = signal<any[]>([]);
+
+  ngOnInit(): void {
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      const loanType = params.get('loanType') || 'general';
+      this.slug.set(loanType);
+      this.product.set(findLoanProduct(loanType) || { title: 'Shivam Loans', description: 'General FAQ\'s' });
+      this.faqs.set(getLoanFaqs(loanType));
+      if (isPlatformBrowser(this.platformId)) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

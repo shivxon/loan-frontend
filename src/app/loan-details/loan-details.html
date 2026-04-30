@@ -6,7 +6,7 @@
 <!-- 🔹 LOAN PAGE -->
 <main class="loan-details-view">
   @if (product; as p) {
-  
+
   <!-- 🔹 PAGE BANNER -->
   <section class="loan-banner" [attr.data-slug]="slug">
     <div class="banner-container">
@@ -28,7 +28,8 @@
 
   <!-- 🔹 CONTENT AREA -->
   <div class="loan-details-content">
-    <app-info-tabs [tabs]="loanTabs" [activeTabId]="activeTabId()" (tabChange)="activeTabId.set($event)"></app-info-tabs>
+    <app-info-tabs [tabs]="loanTabs()" [activeTabId]="activeTabId()"
+      (tabChange)="activeTabId.set($event)"></app-info-tabs>
   </div>
 
   <!-- 🔹 STICKY CTA -->

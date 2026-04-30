@@ -1,28 +1,29 @@
-import { Component, Input, Output, EventEmitter, signal, computed, effect, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, computed, effect, inject, input } from '@angular/core';
 import { InfoTab } from './info-tabs.types';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-info-tabs',
   standalone: true,
+  imports: [RouterModule],
   templateUrl: './info-tabs.component.html',
   styleUrl: './info-tabs.component.scss'
 })
 export class InfoTabsComponent {
-  private router = inject(Router);
-  @Input({ required: true }) tabs: InfoTab[] = [];
-  @Input() set activeTabId(id: string | null | undefined) {
-    if (id && this.tabs.some(t => t.id === id)) {
-      this.activeTab.set(id);
-    }
-  }
+  router = inject(Router);
+  // @Input({ required: true }) tabs: InfoTab[] = [];
+  tabs = input<InfoTab[]>([]);
+  activeTabId = input<string | null>(null);
 
   @Output() tabChange = new EventEmitter<string>();
-
+  slug: string = ""
   protected readonly activeTab = signal<string>('');
 
   protected readonly activeTabContent = computed(() => {
-    return this.tabs.find((tab) => tab.id === this.activeTab()) ?? this.tabs[0];
+    const tabs = this.tabs(); // 🔥 important
+    const active = this.activeTab();
+
+    return tabs.find(tab => tab.id === active) ?? tabs[0];
   });
 
   protected readonly loanAmount = signal(50000);
@@ -49,6 +50,7 @@ export class InfoTabsComponent {
       });
   });
 
+
   private calculateEmi(principal: number, rate: number, months: number): number {
     const monthlyRate = rate / 12 / 100;
     if (monthlyRate === 0) return Math.round(principal / months);
@@ -73,10 +75,19 @@ export class InfoTabsComponent {
   protected readonly reviewIndex = signal(0);
 
   constructor() {
+    // effect(() => {
+    //   // Set initial tab if none selected
+    //   if (!this.activeTab() && this.tabs?.length > 0) {
+    //     this.activeTab.set(this.tabs[0].id);
+    //   }
+    // });
+
     effect(() => {
-      // Set initial tab if none selected
-      if (!this.activeTab() && this.tabs?.length > 0) {
-        this.activeTab.set(this.tabs[0].id);
+      const id = this.activeTabId();
+      const tabs = this.tabs();
+
+      if (id && tabs.some(t => t.id === id)) {
+        this.activeTab.set(id);
       }
     });
 
@@ -109,7 +120,7 @@ export class InfoTabsComponent {
   protected selectTab(tabId: string): void {
     this.activeTab.set(tabId);
     this.tabChange.emit(tabId);
-    
+
     if (tabId === 'faq') {
       const tab = this.activeTabContent();
       if (tab?.faqs?.length) {
@@ -158,14 +169,12 @@ export class InfoTabsComponent {
   });
 
   protected toggleShowAllFaqs(): void {
-    const urlParts = this.router.url.split('?')[0].split('/');
-    const slug = urlParts[2]; // loan/:loanType or dashboard (empty)
-    
-    if (this.router.url.startsWith('/loan/') && slug) {
-      void this.router.navigate(['/loan', slug, 'faqs']);
+    if (this.router.url.includes('/loan/')) {
+      const parts = this.router.url.split('/');
+      this.slug = parts[2].split('?')[0]; // loan/:loanType
+      void this.router.navigate(['/loan', this.slug, 'faqs']);
     } else {
-      // General FAQs from dashboard
-      void this.router.navigate(['/faqs']);
+      void this.router.navigateByUrl('/faqs');
     }
   }
 
@@ -223,5 +232,18 @@ export class InfoTabsComponent {
       currency: 'INR',
       maximumFractionDigits: 0,
     }).format(value);
+  }
+
+
+  get isLoanPage(): boolean {
+    const parts = this.router.url.split('/');
+    if (parts[2]) this.slug = parts[2].split('?')[0]; // loan/:loanType
+    return this.router.url.includes('/loan/');
+  }
+
+  get faqLink(): any[] | string {
+    return this.isLoanPage
+      ? ['/loan', this.slug, 'faqs']
+      : '/faqs';
   }
 }

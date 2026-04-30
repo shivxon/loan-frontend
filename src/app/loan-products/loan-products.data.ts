@@ -20,7 +20,7 @@ export interface LoanProduct {
   badge?: string;
   documents: string[];
   applicationFields: LoanApplicationField[];
-
+  longDescription?: string;
 }
 
 export const LOAN_PRODUCTS: LoanProduct[] = [
@@ -50,6 +50,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         required: true,
       },
     ],
+    longDescription: 'A Personal Loan is a multi-purpose, unsecured loan facility that individuals can avail themselves of to meet various financial needs, such as weddings, travel, medical emergencies, or debt consolidation. Unlike secured loans, it does not require any collateral or security, making it a quick and accessible option for urgent expenses based on the borrower’s income and credit profile.',
   },
   {
     slug: 'home-loan',
@@ -85,6 +86,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         options: ['Ready to move', 'Under construction', 'Plot purchase', 'Renovation'],
       },
     ],
+    longDescription: 'A Home Loan is a secured loan facility offered by banks and Housing Finance Companies for purchasing, constructing, renovating, or extending an existing residential property. The loan is backed by the underlying property till the loan repayment. In case of default by the borrower, the lender has the legal right to take the concerned property into possession and then auction it to recover the unpaid loan amount.',
   },
   {
     slug: 'business-loan',
@@ -119,6 +121,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         required: true,
       },
     ],
+    longDescription: 'A Business Loan is a dedicated credit facility provided to entrepreneurs, SMEs, and large enterprises to fund business operations, expansion, equipment purchase, or working capital needs. These loans can be either secured or unsecured, depending on the amount and tenure, and are designed to help businesses maintain healthy cash flow and achieve growth milestones.',
   },
   {
     slug: 'car-loan',
@@ -154,6 +157,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         required: true,
       },
     ],
+    longDescription: 'A Car Loan is a vehicle financing solution designed to help you purchase a new or used car without paying the full amount upfront. The car itself serves as collateral for the loan. Borrowers repay the loan in fixed monthly installments over a set tenure, after which the ownership is fully transferred and all liens are removed from the vehicle registration.',
   },
   {
     slug: 'education-loan',
@@ -188,6 +192,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         required: true,
       },
     ],
+    longDescription: 'An Education Loan is a specialized financial product designed to help students pursue higher education in India or abroad. It covers tuition fees, books, equipment, and living expenses. These loans often feature a moratorium period, allowing students to start repayment only after completing their course and securing employment, thus easing the financial burden on families.',
   },
   {
     slug: 'gold-loan',
@@ -223,6 +228,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         required: true,
       },
     ],
+    longDescription: 'A Gold Loan is an instant secured loan facility where you can borrow money by pledging your gold ornaments or coins as collateral. The loan amount is usually a percentage of the market value of the gold. It is one of the fastest ways to get funds with minimal documentation and attractive interest rates, as the underlying asset reduces the lender’s risk.',
   },
   {
     slug: 'loan-against-property',
@@ -258,6 +264,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         required: true,
       },
     ],
+    longDescription: 'Loan Against Property (LAP) is a high-value secured loan where you mortgage your existing residential, commercial, or industrial property to unlock its market value. It is an ideal solution for long-term funding requirements like business expansion, child’s education, or debt consolidation, offering lower interest rates compared to unsecured loans due to the high-value security provided.',
   },
   {
     slug: 'working-capital-finance',
@@ -326,6 +333,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         required: false,
       },
     ],
+    longDescription: 'Working Capital Finance is a short-term funding solution designed to help businesses manage their daily operational expenses and bridge the gap between accounts payable and accounts receivable. It includes facilities like Cash Credit, Overdraft, and Invoice Financing, allowing businesses to maintain smooth operations even during seasonal fluctuations or growth phases.',
   },
   {
     "slug": "cash-credit",
@@ -368,6 +376,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         "required": true
       }
     ],
+    longDescription: 'Cash Credit (CC) is a flexible working capital facility provided to businesses against the security of their current assets like stock and receivables. It allows businesses to withdraw funds up to a sanctioned limit to meet their day-to-day requirements, with interest charged only on the daily balance utilized, making it a highly cost-effective financing tool.',
   },
   {
     "slug": "overdraft",
@@ -401,6 +410,7 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         "required": false
       }
     ],
+    longDescription: 'An Overdraft (OD) facility is a financial arrangement that allows account holders to withdraw more money than they actually have in their bank account, up to a specified limit. It is an excellent tool for managing unexpected expenses or seasonal cash flow gaps, as interest is only calculated on the amount overdrawn and for the exact duration of the usage.',
   },
   {
     "slug": "term-loan",
@@ -434,8 +444,8 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         "type": "number",
         "required": true
       }
-    ]
-
+    ],
+    longDescription: 'A Term Loan is a fixed-tenure credit facility typically used for long-term investments like business expansion, purchasing machinery, or other capital expenditures. The loan is repaid in regular installments (EMIs) over a predetermined period, offering businesses a stable and predictable repayment schedule to match their projected growth and cash flows.',
   },
   {
     "slug": "construction-finance",
@@ -478,7 +488,8 @@ export const LOAN_PRODUCTS: LoanProduct[] = [
         "required": true,
         "options": ["Yes", "No"]
       }
-    ]
+    ],
+    longDescription: 'Construction Finance is a specialized funding solution designed for real estate developers and construction companies to finance the development of residential, commercial, or mixed-use projects. The loan is typically disbursed in stages based on the progress of construction, helping developers manage project costs and timelines efficiently until completion.',
   }
 ];
 

@@ -46,7 +46,7 @@
       @if (content.id === 'faq' || content.faqs?.length) {
         <section class="faq">
           <div class="faq-container">
-            @for (faq of content.faqs; track faq.question) {
+            @for (faq of displayedFaqs(); track faq.question) {
             <div class="faq-card" [class.open]="faq.open">
               <div class="faq-question" (click)="faq.open = !faq.open">
                 <span>{{ faq.question }}</span>
@@ -62,6 +62,14 @@
             </div>
             }
           </div>
+
+          @if (hasMoreFaqs()) {
+            <div class="faq-view-more">
+              <button class="ghost-button" (click)="toggleShowAllFaqs()">
+                Read All Frequently Asked Questions
+              </button>
+            </div>
+          }
         </section>
       }
 
@@ -275,6 +283,9 @@
               No banks found matching "{{ bankSearchTerm() }}"
             </div>
           }
+        </div>
+        <div class="modal-footer">
+          <button class="done-btn" (click)="closeBankModal()">Done</button>
         </div>
       </div>
     </div>

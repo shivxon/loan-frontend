@@ -9,13 +9,40 @@
     </span>
   </a>
 
-  <nav class="primary-nav" aria-label="Primary navigation">
+  <div class="mobile-actions">
+    @if (currentUser()) {
+      <div class="user-avatar-small">{{ userInitials() }}</div>
+    }
+    <button class="mobile-toggle" [class.open]="isMenuOpen()" (click)="toggleMenu()" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <nav class="primary-nav" [class.mobile-open]="isMenuOpen()" aria-label="Primary navigation">
+    @if (currentUser(); as user) {
+      <div class="mobile-user-info">
+        <strong>{{ user.fullName }}</strong>
+        <small>{{ user.phoneNumber }}</small>
+      </div>
+    }
+
     <a routerLink="/" [queryParams]="{ tab: 'overview' }" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
     <a routerLink="/loans" routerLinkActive="active">Loans</a>
-    <a routerLink="/" [queryParams]="{ tab: 'emi' }" routerLinkActive="active">EMI</a>
-    <a routerLink="/" [queryParams]="{ tab: 'eligibility' }" routerLinkActive="active">Eligibility</a>
+    <a routerLink="/" [queryParams]="{ tab: 'emi' }" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false, queryParams: 'exact', paths: 'exact', fragment: 'ignored', matrixParams: 'ignored'}">EMI</a>
+    <a routerLink="/" [queryParams]="{ tab: 'eligibility' }" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false, queryParams: 'exact', paths: 'exact', fragment: 'ignored', matrixParams: 'ignored'}">Eligibility</a>
     <a routerLink="/about" routerLinkActive="active">About Us</a>
-    <a routerLink="/" fragment="contact" routerLinkActive="active">Contact</a>
+    <a routerLink="/" fragment="contact" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Contact</a>
+
+    <div class="mobile-auth-footer">
+      @if (currentUser()) {
+        <button class="ghost-button full-width danger" type="button" (click)="logout()">Logout</button>
+      } @else {
+        <button class="ghost-button full-width" type="button" (click)="openAuth('signup')">Sign up</button>
+        <button class="primary-button full-width" type="button" (click)="openAuth('login')">Sign in</button>
+      }
+    </div>
   </nav>
 
   <div class="topbar-actions">

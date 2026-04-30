@@ -17,8 +17,10 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
   const accessToken = authService.accessToken();
   const alreadyRetried = request.headers.has('x-retry');
 
-  // ✅ Attach token if needed
-  let modifiedRequest = request;
+  // ✅ Attach token and ngrok skip header if needed
+  let headers: Record<string, string> = {
+    'ngrok-skip-browser-warning': 'true'
+  };
 
   if (
     isApiRequest &&
@@ -26,8 +28,10 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
     accessToken &&
     !request.headers.has('Authorization')
   ) {
-    modifiedRequest = addAuthHeader(request, accessToken);
+    headers['Authorization'] = `Bearer ${accessToken}`;
   }
+
+  const modifiedRequest = request.clone({ setHeaders: headers });
 
   return next(modifiedRequest).pipe(
     catchError((error: unknown) => {
@@ -43,10 +47,14 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
       return authService.refreshSession().pipe(
         switchMap((user) => {
           const retryRequest = request.clone({
-            setHeaders: { 'x-retry': 'true' },
+            setHeaders: { 
+              'x-retry': 'true',
+              'ngrok-skip-browser-warning': 'true',
+              'Authorization': `Bearer ${user.accessToken}`
+            },
           });
 
-          return next(addAuthHeader(retryRequest, user.accessToken));
+          return next(retryRequest);
         }),
         catchError((refreshError: unknown) => {
           authService.clearLocalSession();
@@ -56,14 +64,3 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
     }),
   );
 };
-
-function addAuthHeader(
-  request: HttpRequest<unknown>,
-  accessToken: string,
-) {
-  return request.clone({
-    setHeaders: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-}

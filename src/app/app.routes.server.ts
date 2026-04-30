@@ -10,6 +10,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
+    path: 'loan/:loanType/faqs',
+    renderMode: RenderMode.Server
+  },
+  {
     path: 'application/:referenceNumber',
     renderMode: RenderMode.Server
   },

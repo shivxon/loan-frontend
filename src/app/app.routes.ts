@@ -28,6 +28,11 @@ export const routes: Routes = [
     title: 'Loan Details',
   },
   {
+    path: 'loan/:loanType/faqs',
+    loadComponent: () => import('./loan-details/loan-faq-page/loan-faq-page').then(m => m.LoanFaqPageComponent),
+    title: 'Loan FAQ\'s',
+  },
+  {
     path: 'apply/:loanType',
     component: LoanApplicationComponent,
     canActivate: [authGuard],

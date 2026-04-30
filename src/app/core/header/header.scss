@@ -186,32 +186,217 @@
     border-color: #cbd5e1;
     color: #17243a;
   }
+
+  &.full-width {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
-@media (max-width: 1100px) {
-  .topbar {
-    gap: 20px;
-    padding: 0 24px;
+.primary-button.full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+.mobile-user-info {
+  display: none !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f1f5f9;
+
+  strong {
+    color: #17243a;
+    font-size: 18px;
+    font-weight: 800;
   }
-  .primary-nav {
-    gap: 20px;
+
+  small {
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.mobile-auth-footer {
+  display: none !important;
+  margin-top: auto;
+  padding-top: 32px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .danger {
+    color: #ef3c50;
+    border-color: rgba(239, 60, 80, 0.2);
+    background: rgba(239, 60, 80, 0.05);
+    
+    &:hover {
+      background: rgba(239, 60, 80, 0.1);
+      border-color: #ef3c50;
+    }
+  }
+}
+
+
+.mobile-actions {
+  display: none !important;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.user-avatar-small {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, #1f5fae 0%, #2b70c9 100%);
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 4px 8px rgba(31, 95, 174, 0.15);
+  border: 1px solid #ffffff;
+}
+
+.mobile-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1100;
+  align-self: center;
+
+  span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #17243a;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left center;
+  }
+
+  &.open {
+    span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); }
+    span:nth-child(2) { opacity: 0; transform: translateX(10px); }
+    span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); }
   }
 }
 
 @media (max-width: 1024px) {
-  .primary-nav {
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    min-height: 72px;
+  }
+
+  .mobile-actions {
+    display: flex;
+  }
+
+  .mobile-toggle {
+    display: flex;
+    margin-left: 0;
+  }
+
+  .topbar-actions {
     display: none;
+  }
+
+  .mobile-auth-footer {
+    display: flex !important;
+  }
+
+  .mobile-user-info {
+    display: flex !important;
+  }
+
+  .mobile-actions {
+    display: flex !important;
+  }
+
+  .primary-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    flex-direction: column;
+    padding: 40px 24px;
+    gap: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(-20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
+    &.mobile-open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    a {
+      width: 100%;
+      text-align: center;
+      font-size: 18px;
+      padding: 12px 0;
+      
+      &::after {
+        display: none;
+      }
+    }
   }
 }
 
 @media (max-width: 640px) {
   .topbar {
-    min-height: 72px;
+    padding: 0 16px;
   }
-  .brand-copy small {
-    display: none;
+
+  .brand-copy strong {
+    font-size: 17px;
   }
-  .ghost-button {
-    display: none;
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+
+    span {
+      width: 16px;
+      height: 16px;
+      border-width: 4px;
+    }
+  }
+
+  .primary-button.compact {
+    padding: 0 16px;
+    font-size: 14px;
+    min-height: 38px;
+  }
+
+  .user-chip {
+    padding: 0 12px;
+    font-size: 13px;
+    min-height: 36px;
   }
 }

@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter, signal, computed, effect } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, computed, effect, inject } from '@angular/core';
 import { InfoTab } from './info-tabs.types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-info-tabs',
@@ -8,6 +9,7 @@ import { InfoTab } from './info-tabs.types';
   styleUrl: './info-tabs.component.scss'
 })
 export class InfoTabsComponent {
+  private router = inject(Router);
   @Input({ required: true }) tabs: InfoTab[] = [];
   @Input() set activeTabId(id: string | null | undefined) {
     if (id && this.tabs.some(t => t.id === id)) {
@@ -141,6 +143,32 @@ export class InfoTabsComponent {
     document.head.appendChild(script);
   }
 
+  protected readonly showAllFaqs = signal(false);
+
+  protected readonly displayedFaqs = computed(() => {
+    const faqs = this.activeTabContent()?.faqs;
+    if (!faqs) return [];
+    if (this.showAllFaqs()) return faqs;
+    return faqs.slice(0, 3);
+  });
+
+  protected readonly hasMoreFaqs = computed(() => {
+    const faqs = this.activeTabContent()?.faqs;
+    return (faqs?.length ?? 0) > 3;
+  });
+
+  protected toggleShowAllFaqs(): void {
+    const urlParts = this.router.url.split('?')[0].split('/');
+    const slug = urlParts[2]; // loan/:loanType or dashboard (empty)
+    
+    if (this.router.url.startsWith('/loan/') && slug) {
+      void this.router.navigate(['/loan', slug, 'faqs']);
+    } else {
+      // General FAQs from dashboard
+      void this.router.navigate(['/faqs']);
+    }
+  }
+
   protected readonly selectedBanks = signal<string[]>([]);
   protected readonly isBankModalOpen = signal(false);
   protected readonly bankSearchTerm = signal('');
@@ -163,16 +191,16 @@ export class InfoTabsComponent {
 
   protected selectBankFromModal(bank: any): void {
     this.toggleBank(bank);
-    this.closeBankModal();
+    // Keep modal open for multiple selection
   }
 
   protected toggleBank(bank: any): void {
     const current = this.selectedBanks();
     if (current.includes(bank.id)) {
-      this.selectedBanks.set([]);
+      this.selectedBanks.set(current.filter(id => id !== bank.id));
     } else {
-      this.selectedBanks.set([bank.id]);
-      this.interestRate.set(bank.interestRate);
+      this.selectedBanks.set([...current, bank.id]);
+      this.interestRate.set(bank.interestRate); // Sync primary slider to latest selection
     }
   }
 

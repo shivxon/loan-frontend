@@ -125,23 +125,33 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 54px 72px;
+  padding: 64px 72px 54px;
 }
 
 .close-button {
   position: absolute;
-  top: 22px;
-  right: 22px;
+  top: 24px;
+  right: 24px;
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   place-items: center;
-  color: #334257;
-  background: transparent;
-  border: 0;
-  font-size: 38px;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 50%;
+  font-size: 24px;
   line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 100;
+
+  &:hover {
+    background: #f1f5f9;
+    color: #ef3c50;
+    transform: rotate(90deg);
+    border-color: #ef3c50;
+  }
 }
 
 .mode-tabs {
@@ -374,7 +384,12 @@
   }
 
   .auth-form {
-    padding: 42px 28px 32px;
+    padding: 64px 24px 32px;
+  }
+  
+  .close-button {
+    top: 16px;
+    right: 16px;
   }
 }
 

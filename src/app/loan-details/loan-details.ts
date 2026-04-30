@@ -51,7 +51,7 @@ export class LoanDetailsComponent {
           label: 'Overview',
           eyebrow: `${this.product.title} Overview`,
           title: `Understand your ${this.product.title}`,
-          description: this.product.description,
+          description: this.product.longDescription || this.product.description,
           points: [
             `Maximum loan amount: ${this.product.maxAmount}`,
             `Flexible tenure up to ${this.product.tenure}`,

@@ -1,17 +1,27 @@
+<div class="contact-strip">
+  <div class="contact-info">
+    <a href="tel:0882579119"><i class="fa-solid fa-phone"></i> +91 87555 40601</a>
+    <a href="mailto:info@financelite.com.au"><i class="fa-solid fa-envelope"></i> support@elitefinance.com</a>
+  </div>
+  <div class="social-icons">
+    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+  </div>
+</div>
+
 <header class="topbar" [class.is-scrolled]="isScrolled()">
-  <a class="brand" routerLink="/" aria-label="Shivam Loans home">
-    <span class="brand-mark" aria-hidden="true">
-      <span></span>
-    </span>
+  <a class="brand" routerLink="/" aria-label="Elite Finance home">
+    <img src="assets/ef-logo.svg" alt="Elite Finance Logo" class="brand-logo" />
     <span class="brand-copy">
-      <strong>Shivam Loans</strong>
+      <strong>Elite Finance</strong>
       <small>much more than money</small>
     </span>
   </a>
 
   <div class="mobile-actions">
     @if (currentUser()) {
-      <div class="user-avatar-small">{{ userInitials() }}</div>
+    <div class="user-avatar-small">{{ userInitials() }}</div>
     }
     <button class="mobile-toggle" [class.open]="isMenuOpen()" (click)="toggleMenu()" aria-label="Toggle navigation">
       <span></span>
@@ -22,25 +32,28 @@
 
   <nav class="primary-nav" [class.mobile-open]="isMenuOpen()" aria-label="Primary navigation">
     @if (currentUser(); as user) {
-      <div class="mobile-user-info">
-        <strong>{{ user.fullName }}</strong>
-        <small>{{ user.phoneNumber }}</small>
-      </div>
+    <div class="mobile-user-info">
+      <strong>{{ user.fullName }}</strong>
+      <small>{{ user.phoneNumber }}</small>
+    </div>
     }
 
-    <a routerLink="/" [queryParams]="{ tab: 'overview' }" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
-    <a routerLink="/loans" routerLinkActive="active">Loans</a>
-    <a routerLink="/" [queryParams]="{ tab: 'emi' }" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false, queryParams: 'exact', paths: 'exact', fragment: 'ignored', matrixParams: 'ignored'}">EMI</a>
-    <a routerLink="/" [queryParams]="{ tab: 'eligibility' }" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false, queryParams: 'exact', paths: 'exact', fragment: 'ignored', matrixParams: 'ignored'}">Eligibility</a>
+    <a routerLink="/" [queryParams]="{ tab: 'overview' }" routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}">Home</a>
     <a routerLink="/about" routerLinkActive="active">About Us</a>
-    <a routerLink="/" fragment="contact" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Contact</a>
+    <a routerLink="/loans" routerLinkActive="active">Loans</a>
+    <a routerLink="/" [queryParams]="{ tab: 'emi' }" routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: false, queryParams: 'exact', paths: 'exact', fragment: 'ignored', matrixParams: 'ignored'}">EMI</a>
+    <a routerLink="/" [queryParams]="{ tab: 'eligibility' }" routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: false, queryParams: 'exact', paths: 'exact', fragment: 'ignored', matrixParams: 'ignored'}">Eligibility</a>
+    <a routerLink="/contact" routerLinkActive="active">Contact Us</a>
 
     <div class="mobile-auth-footer">
       @if (currentUser()) {
-        <button class="ghost-button full-width danger" type="button" (click)="logout()">Logout</button>
+      <button class="ghost-button full-width danger" type="button" (click)="logout()">Logout</button>
       } @else {
-        <button class="ghost-button full-width" type="button" (click)="openAuth('signup')">Sign up</button>
-        <button class="primary-button full-width" type="button" (click)="openAuth('login')">Sign in</button>
+      <button class="ghost-button full-width" type="button" (click)="openAuth('signup')">Sign up</button>
+      <button class="primary-button full-width" type="button" (click)="openAuth('login')">Sign in</button>
       }
     </div>
   </nav>

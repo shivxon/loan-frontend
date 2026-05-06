@@ -107,7 +107,7 @@ export class LoanDetailsComponent implements OnInit, OnDestroy {
         description: 'Highlights of this loan tailored for you.',
         points: [
           'Instant profile review with partner banks',
-          'Paperless application journey',
+          // 'Paperless application journey',
           'Fast approval and disbursal'
         ],
         metrics: [
@@ -151,7 +151,7 @@ export class LoanDetailsComponent implements OnInit, OnDestroy {
         eyebrow: 'EMI Estimate',
         title: 'Calculate your monthly EMI',
         description: 'Estimate your monthly repayment before you apply for the loan.',
-        bankOffers: getBankOffersForLoan(this.slug || 'personal-loan')
+        // bankOffers: getBankOffersForLoan(this.slug || 'personal-loan')
       },
       {
         id: 'faq',

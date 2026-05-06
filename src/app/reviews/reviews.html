@@ -1,0 +1,52 @@
+<main class="reviews-page">
+  <div class="reviews-header">
+    <div class="header-content">
+      <h1>What Our Customers Say</h1>
+      <p>Don't just take our word for it. Read the success stories of people who found their perfect loan with Elite Finance.</p>
+      
+      <div class="overall-rating">
+        <div class="rating-number">4.9</div>
+        <div class="rating-stars">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star-half-stroke"></i>
+        </div>
+        <div class="rating-text">Based on 500+ reviews</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reviews-container">
+    <div class="reviews-grid">
+      @for (review of reviews; track review.id) {
+        <div class="review-card">
+          <div class="review-header">
+            <img [src]="review.avatar" [alt]="review.name" class="reviewer-avatar">
+            <div class="reviewer-info">
+              <h3>{{ review.name }}</h3>
+              <span class="review-date">{{ review.date }}</span>
+            </div>
+          </div>
+          
+          <div class="review-rating">
+            @for (star of getStars(review.rating); track $index) {
+              <i class="fa-solid fa-star"></i>
+            }
+          </div>
+          
+          <p class="review-comment">"{{ review.comment }}"</p>
+          
+          <div class="review-product">
+            <span class="product-badge">{{ review.product }}</span>
+          </div>
+        </div>
+      }
+    </div>
+    
+    <div class="load-more">
+      <button class="secondary-button">Load More Reviews</button>
+    </div>
+  </div>
+</main>

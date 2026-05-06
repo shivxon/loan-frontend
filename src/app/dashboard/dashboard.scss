@@ -239,9 +239,31 @@
 
 .journey-band,
 .loan-types-band,
+.my-applications-band,
 .dashboard-panel {
   width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
+}
+
+.loan-types-band {
+  background-color: #ffffff;
+  box-shadow: 0 0 0 100vmax #ffffff;
+  clip-path: inset(0 -100vmax);
+  padding: 40px 0 34px;
+}
+
+.my-applications-band {
+  background-color: #f8fafc;
+  box-shadow: 0 0 0 100vmax #f8fafc;
+  clip-path: inset(0 -100vmax);
+  padding: 40px 0;
+}
+
+.dashboard-panel {
+  background-color: #ffffff;
+  box-shadow: 0 0 0 100vmax #ffffff;
+  clip-path: inset(0 -100vmax);
+  padding: 40px 0 78px;
 }
 
 .journey-band {
@@ -274,10 +296,6 @@
   margin: 0;
   color: #607087;
   line-height: 1.65;
-}
-
-.loan-types-band {
-  padding: 0 0 34px;
 }
 
 .loan-types-heading {
@@ -331,10 +349,6 @@
 .loan-type-card small {
   color: #607087;
   font-weight: 800;
-}
-
-.dashboard-panel {
-  padding: 36px 0 78px;
 }
 
 .secondary-button.light {
@@ -1000,6 +1014,7 @@
       letter-spacing: -0.02em;
       line-height: 1.2;
     }
+
     p {
       margin: 4px 0 0;
       font-size: 14px;
@@ -1040,6 +1055,7 @@
   &::-webkit-scrollbar {
     width: 6px;
   }
+
   &::-webkit-scrollbar-thumb {
     background: #e2e8f0;
     border-radius: 10px;
@@ -1080,8 +1096,14 @@
       color: #64748b;
       font-weight: 500;
 
-      .ref { color: #1f5fae; font-weight: 700; }
-      .dot { color: #cbd5e1; }
+      .ref {
+        color: #1f5fae;
+        font-weight: 700;
+      }
+
+      .dot {
+        color: #cbd5e1;
+      }
     }
   }
 }
@@ -1095,19 +1117,92 @@
   letter-spacing: 0.05em;
   white-space: nowrap;
 
-  &[data-status="submitted"] { color: #1f6fc2; background: #e8f2ff; }
-  &[data-status="review"] { color: #b8860b; background: #fff8e6; }
-  &[data-status="approved"] { color: #17664d; background: #e6f9f0; }
-  &[data-status="rejected"] { color: #c72336; background: #ffeaed; }
-  &[data-status="faulted"] { color: #c77b23; background: #fff3e0; }
+  &[data-status="submitted"] {
+    color: #1f6fc2;
+    background: #e8f2ff;
+  }
+
+  &[data-status="review"] {
+    color: #b8860b;
+    background: #fff8e6;
+  }
+
+  &[data-status="approved"] {
+    color: #17664d;
+    background: #e6f9f0;
+  }
+
+  &[data-status="rejected"] {
+    color: #c72336;
+    background: #ffeaed;
+  }
+
+  &[data-status="faulted"] {
+    color: #c77b23;
+    background: #fff3e0;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image-main img {
+  width: 420px;
+  max-width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.hero-image-overlay {
+  position: absolute;
+  bottom: -20px;
+  right: -40px;
+}
+
+.hero-image-overlay img {
+  width: 220px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }

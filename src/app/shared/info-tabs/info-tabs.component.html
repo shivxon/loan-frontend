@@ -127,7 +127,7 @@
       @if (content.id === 'emi') {
       <!-- EMI CALCULATOR -->
       <div class="emi-widget">
-        @if (content.bankOffers; as offers) {
+        <!-- @if (content.bankOffers; as offers) {
         <div class="bank-selector">
           <span class="label">Select Your Bank (Compare Multiple)</span>
           <div class="bank-chips">
@@ -151,7 +151,7 @@
             }
           </div>
         </div>
-        }
+        } -->
 
         <div class="input-group">
           <label>
@@ -179,7 +179,7 @@
           </div>
         </div>
 
-        @if (bankComparison().length > 0) {
+        <!-- @if (bankComparison().length > 0) {
         <div class="bank-comparison">
           <h4>Bank Comparison</h4>
           <div class="comparison-table">
@@ -197,7 +197,7 @@
             }
           </div>
         </div>
-        }
+        } -->
 
         <div class="emi-visuals">
           <div class="chart-box">
@@ -246,7 +246,7 @@
 
   </article>
   }
-  @if (isBankModalOpen()) {
+  <!-- @if (isBankModalOpen()) {
   <div class="bank-modal-overlay" (click)="closeBankModal()">
     <div class="bank-modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -288,5 +288,5 @@
       </div>
     </div>
   </div>
-  }
+  } -->
 </div>

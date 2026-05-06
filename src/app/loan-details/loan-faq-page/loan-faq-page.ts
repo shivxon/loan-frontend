@@ -169,14 +169,14 @@ export class LoanFaqPageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   slug = signal<string>('general');
-  product = signal<any>({ title: 'Shivam Loans', description: 'General FAQ\'s' });
+  product = signal<any>({ title: 'Elite Finance', description: 'General FAQ\'s' });
   faqs = signal<any[]>([]);
 
   ngOnInit(): void {
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const loanType = params.get('loanType') || 'general';
       this.slug.set(loanType);
-      this.product.set(findLoanProduct(loanType) || { title: 'Shivam Loans', description: 'General FAQ\'s' });
+      this.product.set(findLoanProduct(loanType) || { title: 'Elite Finance', description: 'General FAQ\'s' });
       this.faqs.set(getLoanFaqs(loanType));
       if (isPlatformBrowser(this.platformId)) {
         window.scrollTo({ top: 0, behavior: 'smooth' });

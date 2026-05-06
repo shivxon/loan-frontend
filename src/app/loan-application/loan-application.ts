@@ -61,19 +61,19 @@ export class LoanApplicationComponent {
       placeholder: 'Enter email address',
       required: true,
     },
-    {
-      name: 'panNumber',
-      label: 'PAN number',
-      type: 'text',
-      placeholder: 'ABCDE1234F',
-      required: true,
-    },
-    {
-      name: 'aadhaarNumber',
-      label: 'Aadhaar number',
-      type: 'text',
-      placeholder: '12 digit Aadhaar number',
-    },
+    // {
+    //   name: 'panNumber',
+    //   label: 'PAN number',
+    //   type: 'text',
+    //   placeholder: 'ABCDE1234F',
+    //   required: true,
+    // },
+    // {
+    //   name: 'aadhaarNumber',
+    //   label: 'Aadhaar number',
+    //   type: 'text',
+    //   placeholder: '12 digit Aadhaar number',
+    // },
     {
       name: 'dateOfBirth',
       label: 'Date of birth',
@@ -157,8 +157,8 @@ export class LoanApplicationComponent {
     fullName: '',
     phoneNumber: '',
     email: '',
-    panNumber: '',
-    aadhaarNumber: '',
+    // panNumber: '',
+    // aadhaarNumber: '',
     dateOfBirth: '',
     loanAmount: '',
     preferredTenure: '',
@@ -181,7 +181,7 @@ export class LoanApplicationComponent {
       }
 
       this.loanProduct.set(product);
-      this.ensureProductFields(product);
+      // this.ensureProductFields(product);
       this.prefillLoggedInUser();
 
       // Dispatch load draft from API
@@ -202,7 +202,7 @@ export class LoanApplicationComponent {
         this.loanProductsService.findBySlug(product.slug).subscribe({
           next: (backendProduct) => {
             this.loanProduct.set(backendProduct);
-            this.ensureProductFields(backendProduct);
+            // this.ensureProductFields(backendProduct);
           },
           error: () => {
             this.loanProduct.set(product);
@@ -284,7 +284,7 @@ export class LoanApplicationComponent {
         loanType: this.loanProduct().slug,
         applicant: this.collectFieldValues(this.applicantFields),
         financial: this.collectFieldValues(this.financialFields),
-        productDetails: this.collectFieldValues(this.loanProduct().applicationFields),
+        // productDetails: this.collectFieldValues(this.loanProduct().applicationFields),
         address: this.collectFieldValues(this.addressFields),
         consentAccepted: this.termsAccepted,
       })
@@ -310,17 +310,17 @@ export class LoanApplicationComponent {
       ...this.applicantFields,
       ...this.financialFields,
       ...this.addressFields,
-      ...this.loanProduct().applicationFields,
+      // ...this.loanProduct().applicationFields,
     ];
 
     return allFields.every((field) => this.isFieldValid(field)) && this.termsAccepted;
   }
 
-  private ensureProductFields(product: LoanProduct): void {
-    for (const field of product.applicationFields) {
-      this.formData[field.name] ??= '';
-    }
-  }
+  // private ensureProductFields(product: LoanProduct): void {
+  //   for (const field of product.applicationFields) {
+  //     this.formData[field.name] ??= '';
+  //   }
+  // }
 
   private prefillLoggedInUser(): void {
     const currentUser = this.authService.currentUser();

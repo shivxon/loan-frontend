@@ -3,19 +3,19 @@
 
   <section class="about-hero">
     <div class="hero-content">
-      <p class="section-kicker">About Shivam Loans</p>
+      <p class="section-kicker">About Elite Finance</p>
       <h1>Much more than money</h1>
       <p class="hero-lede">
-        We are a digital lending platform committed to making loan access simple,
-        fast, and transparent for every Indian. From personal loans to business
-        financing, we connect you with the right lender at the right terms.
+        We are a digital loan facilitation platform dedicated to making loan access simple, fast, and transparent. We
+        partner with trusted lenders to help you compare options, choose the right loan, and complete your application
+        with expert guidance.
       </p>
       <a class="primary-button" routerLink="/loans">Explore Loan Products</a>
     </div>
     <div class="hero-accent" aria-hidden="true">
       <div class="accent-ring">
         <div class="inner-ring">
-          <strong>SL</strong>
+          <strong>EF</strong>
         </div>
       </div>
     </div>
@@ -23,10 +23,10 @@
 
   <section class="stats-band" aria-label="Company statistics">
     @for (stat of stats; track stat.label) {
-      <div class="stat-card">
-        <strong>{{ stat.value }}</strong>
-        <span>{{ stat.label }}</span>
-      </div>
+    <div class="stat-card">
+      <strong>{{ stat.value }}</strong>
+      <span>{{ stat.label }}</span>
+    </div>
     }
   </section>
 
@@ -57,37 +57,23 @@
     </div>
     <div class="values-grid">
       @for (value of values; track value.title) {
-        <div class="value-card">
-          <span class="value-icon" aria-hidden="true">{{ value.icon }}</span>
-          <h3>{{ value.title }}</h3>
-          <p>{{ value.description }}</p>
-        </div>
+      <div class="value-card">
+        <span class="value-icon" aria-hidden="true">{{ value.icon }}</span>
+        <h3>{{ value.title }}</h3>
+        <p>{{ value.description }}</p>
+      </div>
       }
     </div>
   </section>
 
-  <section class="team-section" aria-labelledby="team-title">
-    <div class="team-heading">
-      <p class="section-kicker">Our leadership</p>
-      <h2 id="team-title">Meet the Team</h2>
-    </div>
-    <div class="team-grid">
-      @for (member of team; track member.name) {
-        <div class="team-card">
-          <div class="avatar">{{ member.initials }}</div>
-          <strong>{{ member.name }}</strong>
-          <span>{{ member.role }}</span>
-        </div>
-      }
-    </div>
-  </section>
+  <app-team></app-team>
 
   <section class="cta-section">
     <h2>Ready to get started?</h2>
-    <p>Apply for a loan today and experience the Shivam Loans difference.</p>
+    <p>Apply for a loan today and experience the Elite Finance difference.</p>
     <div class="cta-actions">
       <a class="primary-button" routerLink="/loans">Apply Now</a>
-      <a class="secondary-button" routerLink="/" fragment="contact">Contact Us</a>
+      <a class="secondary-button" routerLink="/contact">Contact Us</a>
     </div>
   </section>
 

@@ -15,7 +15,7 @@ export const routes: Routes = [
   {
     path: '',
     component: DashboardComponent,
-    title: 'Shivam Loans Dashboard',
+    title: 'Elite Finance Dashboard',
   },
   {
     path: 'loans',
@@ -28,7 +28,7 @@ export const routes: Routes = [
     component: LoanDetailsComponent,
     title: (route) => {
       const formatted = formatLoanType(route.params['loanType']);
-      return `${formatted} – Interest Rates, Eligibility | Shivam Loans`;
+      return `${formatted} – Interest Rates, Eligibility | Elite Finance`;
     },
   },
   {
@@ -36,7 +36,7 @@ export const routes: Routes = [
     loadComponent: () => import('./loan-details/loan-faq-page/loan-faq-page').then(m => m.LoanFaqPageComponent),
     title: (route) => {
       const formatted = formatLoanType(route.params['loanType']);
-      return `${formatted} FAQs | Shivam Loans`
+      return `${formatted} FAQs | Elite Finance`
     },
 
   },
@@ -61,19 +61,29 @@ export const routes: Routes = [
     title: 'Application Details',
   },
   {
+    path: 'reviews',
+    loadComponent: () => import('./reviews/reviews.component').then(m => m.ReviewsComponent),
+    title: 'Customer Reviews — Elite Finance',
+  },
+  {
+    path: 'contact',
+    loadComponent: () => import('./contact/contact').then(m => m.ContactComponent),
+    title: 'Contact Us — Elite Finance',
+  },
+  {
     path: 'about',
     component: AboutComponent,
-    title: 'About Us — Shivam Loans',
+    title: 'About Us — Elite Finance',
   },
   {
     path: 'privacy-policy',
     component: PrivacyPolicyComponent,
-    title: 'Privacy Policy — Shivam Loans',
+    title: 'Privacy Policy — Elite Finance',
   },
   {
     path: 'terms',
     component: TermsConditionsComponent,
-    title: 'Terms and Conditions — Shivam Loans',
+    title: 'Terms and Conditions — Elite Finance',
   },
   {
     path: '**',

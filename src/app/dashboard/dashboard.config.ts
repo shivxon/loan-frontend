@@ -30,7 +30,7 @@ export const DASHBOARD_TABS: InfoTab[] = [
         points: [
             'Instant profile review with partner banks and NBFCs.',
             'Tenures from 12 to 60 months with transparent monthly repayment.',
-            'Paperless application journey with status nudges.',
+            // 'Paperless application journey with status nudges.',
         ],
         metrics: [
             { value: '12-60', label: 'Month tenure' },
@@ -87,7 +87,7 @@ export const DASHBOARD_TABS: InfoTab[] = [
             'Use the estimate to guide the customer into signup.',
         ],
         metrics: [],
-        bankOffers: getBankOffersForLoan('personal-loan')
+        // bankOffers: getBankOffersForLoan('personal-loan')
     },
     {
         id: 'fees',

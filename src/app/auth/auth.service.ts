@@ -53,7 +53,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly apiBaseUrl = inject(API_BASE_URL);
   private readonly platformId = inject(PLATFORM_ID);
-  private readonly storageKey = 'shivam-loans-auth-user';
+  private readonly storageKey = 'elite-finance-auth-user';
   private readonly refreshLeadTimeMs = 5 * 60 * 1000;
   private readonly user = signal<AuthUser | null>(this.readStoredUser());
   private refreshTimeoutId: ReturnType<typeof setTimeout> | null = null;

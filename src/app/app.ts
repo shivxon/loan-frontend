@@ -4,10 +4,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HeaderComponent } from './core/header/header';
 import { FooterComponent } from './core/footer/footer';
 import { AuthModalComponent, AuthMode, AuthSuccess } from './dashboard/auth-modal/auth-modal';
+import { CookieConsentComponent } from './shared/cookie-consent/cookie-consent.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, AuthModalComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, AuthModalComponent, CookieConsentComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

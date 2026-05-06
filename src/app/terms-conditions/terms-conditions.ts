@@ -12,8 +12,8 @@ export class TermsConditionsComponent implements OnInit {
   private meta = inject(Meta);
 
   ngOnInit() {
-    this.title.setTitle('Terms and Conditions | Shivam Loans');
-    this.meta.updateTag({ name: 'description', content: 'Read the terms and conditions for using Shivam Loans services. Understand your rights and responsibilities.' });
+    this.title.setTitle('Terms and Conditions | Elite Finance');
+    this.meta.updateTag({ name: 'description', content: 'Read the terms and conditions for using Elite Finance services. Understand your rights and responsibilities.' });
     this.addJsonLd();
   }
 
@@ -22,11 +22,11 @@ export class TermsConditionsComponent implements OnInit {
     const schema = {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "Terms and Conditions - Shivam Loans",
-      "description": "Legal terms for using Shivam Loans services.",
+      "name": "Terms and Conditions - Elite Finance",
+      "description": "Legal terms for using Elite Finance services.",
       "publisher": {
         "@type": "Organization",
-        "name": "Shivam Loans"
+        "name": "Elite Finance"
       },
       "dateModified": new Date().toISOString()
     };

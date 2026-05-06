@@ -7,7 +7,7 @@ export interface CreateLoanApplicationRequest {
   loanType: string;
   applicant: Record<string, string>;
   financial: Record<string, string>;
-  productDetails: Record<string, string>;
+  // productDetails: Record<string, string>;
   address: Record<string, string>;
   consentAccepted: boolean;
 }

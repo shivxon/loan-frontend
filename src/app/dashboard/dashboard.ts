@@ -16,12 +16,12 @@ import { DASHBOARD_TABS } from './dashboard.config';
 import { Store } from '@ngrx/store';
 import { selectDraft } from '../loan-application/state/loan.selectors';
 import * as LoanActions from '../loan-application/state/loan.actions';
-
+import { TeamComponent } from '../shared/team/team.component';
 
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterLink, InfoTabsComponent],
+  imports: [RouterLink, InfoTabsComponent, TeamComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })

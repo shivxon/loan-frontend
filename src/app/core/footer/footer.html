@@ -4,7 +4,7 @@
     <div class="footer-grid">
       <!-- Brand -->
       <div>
-        <strong>Shivam Loans</strong>
+        <strong>Elite Finance</strong>
         <p>Helping you compare, apply, and get the best loan offers from trusted lenders.</p>
       </div>
 
@@ -13,6 +13,8 @@
         <strong>Company</strong>
         <a routerLink="/">Dashboard</a>
         <a routerLink="/about">About Us</a>
+        <a routerLink="/contact">Contact Us</a>
+        <a routerLink="/reviews">Customer Reviews</a>
         <a routerLink="/" [queryParams]="{ tab: 'fees' }">Fees</a>
         <a routerLink="/" [queryParams]="{ tab: 'faq' }">FAQ</a>
       </div>
@@ -22,7 +24,7 @@
         <strong>Loans</strong>
         <div class="loans-links">
           @for (product of loanProducts; track product.slug) {
-            <a [routerLink]="['/loan', product.slug]">{{ product.title }}</a>
+          <a [routerLink]="['/loan', product.slug]">{{ product.title }}</a>
           }
         </div>
       </div>
@@ -31,7 +33,7 @@
       <div>
         <strong>Contact</strong>
         <p>+91 87555 40601</p>
-        <p>support@shivamloans.com</p>
+        <p>support@elitefinance.com</p>
       </div>
 
       <!-- CTA -->
@@ -57,7 +59,7 @@
 
     <!-- Bottom -->
     <div class="footer-bottom">
-      <span>© 2026 Shivam Loans. All rights reserved.</span>
+      <span>© 2026 Elite Finance. All rights reserved.</span>
 
       <div class="footer-social">
         <a href="#" target="_blank" aria-label="WhatsApp">

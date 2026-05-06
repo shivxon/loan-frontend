@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class="hero-visual" aria-label="Loan dashboard preview">
+      <!-- <div class="hero-visual" aria-label="Loan dashboard preview">
         <div class="visual-card phone-card">
           <div class="phone-top">
             <span></span>
@@ -60,15 +60,40 @@
           <strong>OTP ready</strong>
           <small>Phone verified</small>
         </div>
+      </div> -->
+
+      <div class="hero-visual" aria-label="Loan illustration">
+
+        <!-- Main Image -->
+        <div class="hero-image-main">
+          <img src="assets/loan-hero-main.png" alt="Loan brokerage illustration" />
+        </div>
+
+        <!-- Floating Image (overlay style) -->
+        <div class="hero-image-overlay">
+         <img src="assets/loan-hero-secondary.png" alt="Loan approval UI" />
+             <!-- <img [src]="bannerImage" [alt]="p.title"> -->
+        </div>
+
       </div>
+
+
     </section>
 
     <section class="journey-band" id="loans" aria-label="Loan process">
       @for (item of journey; track item.step) {
-      <article class="journey-card">
-        <span>{{ item.step }}</span>
+      <article class="journey-card interactive">
+        <div class="card-header">
+          <div class="icon-wrapper">
+             <i [class]="item.icon"></i>
+          </div>
+          <span class="step-badge">{{ item.step }}</span>
+        </div>
         <h2>{{ item.title }}</h2>
         <p>{{ item.description }}</p>
+        <div class="time-estimate">
+           <i class="fa-regular fa-clock"></i> {{ item.time }}
+        </div>
       </article>
       }
     </section>
@@ -131,6 +156,8 @@
 
       <app-info-tabs [tabs]="tabs" [activeTabId]="activeTab()" (tabChange)="onTabChange($event)"></app-info-tabs>
     </section>
+
+    <app-team></app-team>
   </main>
 
   @if (isAllApplicationsModalOpen()) {

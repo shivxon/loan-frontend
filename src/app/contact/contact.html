@@ -1,0 +1,75 @@
+<main class="contact-page">
+  <div class="contact-container">
+    <div class="contact-info-header">
+      <div class="info-item">
+        <i class="fa-regular fa-clock"></i>
+        <div>
+          <p>Mon to friday 9am to 9pm</p>
+          <p>Sat and sunday by appointment only</p>
+          <p>Public holidays 9am to 5pm</p>
+        </div>
+      </div>
+      <div class="social-links">
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      </div>
+    </div>
+
+    <section class="form-section">
+      <div class="form-wrapper">
+        <h2>SEND US MESSAGE</h2>
+        <p class="form-desc">
+          We're here to answer all of your burning questions! Whether you want to know more about our lending steps or you just want to get to know us better, we're happy to speak. After all, it is important to us that you are comfortable throughout the whole process.
+        </p>
+
+        @if (submitSuccess) {
+          <div class="success-message">
+            Your message has been sent successfully. We will get back to you shortly.
+          </div>
+        }
+
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+          <div class="form-grid">
+            <div class="input-col">
+              <div class="input-group">
+                <input type="text" formControlName="name" placeholder="Name *" 
+                       [class.invalid]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+              </div>
+              <div class="input-group">
+                <input type="tel" formControlName="phone" placeholder="Phone Number *"
+                       [class.invalid]="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">
+              </div>
+              <div class="input-group">
+                <input type="email" formControlName="email" placeholder="Email *"
+                       [class.invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+              </div>
+            </div>
+            
+            <div class="input-col">
+              <div class="input-group message-group">
+                <textarea formControlName="message" placeholder="Your Message"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="recaptcha-mock">
+            <label class="checkbox-container">
+              <input type="checkbox" formControlName="isNotRobot">
+              <span class="checkmark"></span>
+              I'm not a robot
+            </label>
+            <div class="recaptcha-logo">
+              <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
+              <span>reCAPTCHA</span>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'SENDING...' : 'SEND' }}
+          </button>
+        </form>
+      </div>
+    </section>
+  </div>
+</main>

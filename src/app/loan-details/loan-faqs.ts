@@ -256,7 +256,7 @@ export const LOAN_FAQS: LoanFAQMap = {
             answer: 'The rate is determined by your CIBIL score, monthly income, employment stability, and the lender\'s specific criteria.',
         },
         {
-            question: 'Is my data secure with Shivam Loans?',
+            question: 'Is my data secure with Elite Finance?',
             answer: 'Yes, we use bank-grade encryption and strictly follow data privacy laws to keep your information safe.',
         },
         {
@@ -265,7 +265,7 @@ export const LOAN_FAQS: LoanFAQMap = {
         },
         {
             question: 'Are there any charges for using this platform?',
-            answer: 'No, Shivam Loans is a free platform for customers to compare and apply for loans.',
+            answer: 'No, Elite Finance is a free platform for customers to compare and apply for loans.',
         },
         {
             question: 'What is the minimum CIBIL score required for most loans?',

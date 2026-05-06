@@ -1,0 +1,16 @@
+@if (isVisible()) {
+<div class="cookie-consent-overlay">
+  <div class="cookie-consent-banner">
+    <div class="cookie-icon">
+      <i class="fa-solid fa-cookie-bite"></i>
+    </div>
+    <div class="cookie-content">
+      <h3>We value your privacy</h3>
+      <p>We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept", you consent to our use of cookies.</p>
+    </div>
+    <div class="cookie-actions">
+      <button class="accept-btn" (click)="acceptCookies()">Accept All</button>
+    </div>
+  </div>
+</div>
+}
